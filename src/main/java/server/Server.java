@@ -28,6 +28,7 @@ import java.net.Socket;
 import protocol.Protocol;
 import request_handlers.GetRequestHandler;
 import request_handlers.PostRequestHandler;
+import request_handlers.HeadRequestHandler;
 
 /**
  * This represents a welcoming server for the incoming TCP request from a HTTP
@@ -93,6 +94,7 @@ public class Server implements Runnable {
 				ConnectionHandler handler = new ConnectionHandler(this, connectionSocket);
 				handler.addHandler(Protocol.GET, new GetRequestHandler());
 				handler.addHandler(Protocol.POST, new PostRequestHandler());
+				handler.addHandler(Protocol.HEAD, new HeadRequestHandler());
 				new Thread(handler).start();
 			}
 			this.welcomeSocket.close();
