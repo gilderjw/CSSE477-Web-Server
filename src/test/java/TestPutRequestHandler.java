@@ -79,6 +79,9 @@ public class TestPutRequestHandler {
 		file = new File("temp");
 		file.delete();
 		reader.close();
+		
+		File test = new File("test");
+		test.delete();
 	}
 
 }
