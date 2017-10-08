@@ -39,10 +39,15 @@ public class Protocol {
     // Some useful protocol elements
     public static final String VERSION = "HTTP/1.1";
     public static final String GET = "GET";
+    public static final String DELETE = "DELETE";
+    public static final String PUT = "PUT";
     
     // Some useful http codes and text
     public static final int OK_CODE = 200;
     public static final String OK_TEXT = "OK";
+    
+    public static final String DELETE_OK_TEXT = "DELETE SUCCESSFUL";
+    public static final String DELETE_NOK_TEXT = "DELETE UNSUCCESSFUL";
     
     public static final int MOVED_PERMANENTLY_CODE = 301;
     public static final String MOVED_PERMANENTLY_TEXT = "Moved Permanently";
