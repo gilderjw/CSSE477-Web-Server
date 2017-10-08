@@ -5,7 +5,7 @@ import java.io.File;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
-import response_creators.Response200Creator;
+import response_creators.Response200NoPayloadCreator;
 import response_creators.Response404Creator;
 import server.Server;
 
@@ -31,14 +31,14 @@ public class HeadRequestHandler implements IRequestHandler {
 				file = new File(location);
 				if (file.exists()) {
 					// Lets create 200 OK response
-					response = Response200Creator.createResponse(file, Protocol.CLOSE);
+					response = Response200NoPayloadCreator.createResponse(file, Protocol.CLOSE);
 				} else {
 					// File does not exist so lets create 404 file not found code
 					response = Response404Creator.createResponse(Protocol.CLOSE);
 				}
 			} else { // Its a file
 						// Lets create 200 OK response
-				response = Response200Creator.createResponse(file, Protocol.CLOSE);
+				response = Response200NoPayloadCreator.createResponse(file, Protocol.CLOSE);
 			}
 		} else {
 			// File does not exist so lets create 404 file not found code
