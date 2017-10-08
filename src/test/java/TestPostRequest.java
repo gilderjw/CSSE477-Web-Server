@@ -54,6 +54,30 @@ public class TestPostRequest {
 		assertEquals(contents + appended, newcontents);
 	}
 
+	@Test
+	public void testPostRequestNew() throws Exception {
+		String requestString = "POST /tempNoExist HTTP/1.1\r\ncontent-length: " + appended.length() + "\r\n\r\n"
+				+ appended;
+
+		HttpRequest req = HttpRequest
+				.read(new ByteArrayInputStream(requestString.getBytes(StandardCharsets.UTF_8.name())));
+
+		System.out.println(req);
+
+		Server serv = new Server("./", 8080);
+		HttpResponse resp = new PostRequestHandler().handleRequest(req, serv);
+
+		File respFile = resp.getFile();
+
+		String newcontents = new String(Files.readAllBytes(respFile.toPath()));
+
+		assertEquals(200, resp.getStatus());
+		assertEquals(Protocol.VERSION, resp.getVersion());
+		assertEquals(Protocol.OK_TEXT, resp.getPhrase());
+		assertEquals(appended, newcontents);
+		respFile.delete();
+	}
+
 	@After
 	public void cleanup() {
 		File f = new File("temp");
