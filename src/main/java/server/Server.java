@@ -27,6 +27,7 @@ import java.net.Socket;
 
 import protocol.Protocol;
 import request_handlers.GetRequestHandler;
+import request_handlers.PostRequestHandler;
 
 /**
  * This represents a welcoming server for the incoming TCP request from a HTTP
@@ -91,6 +92,7 @@ public class Server implements Runnable {
 				// thread
 				ConnectionHandler handler = new ConnectionHandler(this, connectionSocket);
 				handler.addHandler(Protocol.GET, new GetRequestHandler());
+				handler.addHandler(Protocol.POST, new PostRequestHandler());
 				new Thread(handler).start();
 			}
 			this.welcomeSocket.close();
@@ -121,7 +123,7 @@ public class Server implements Runnable {
 
 	/**
 	 * Checks if the server is stopeed or not.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isStoped() {
