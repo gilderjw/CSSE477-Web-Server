@@ -54,8 +54,24 @@ public class TestPutRequestHandler {
 		
 		assertEquals(Protocol.OK_TEXT, response.getPhrase());
 		assertEquals("NewText", line);
+	}
+	
+	@Test
+	public void testPutRequestFileNonexistant() throws UnsupportedEncodingException, Exception {
+		String requestString = "PUT /test HTTP/1.1\r\ncontent-length: 7\r\n\r\nnewTest";
 		
+		HttpRequest request = HttpRequest.read(new ByteArrayInputStream(requestString.getBytes(StandardCharsets.UTF_8.name())));
 		
+		Server server = new Server("./", 8080);
+		
+		IRequestHandler handler = new PutRequestHandler();
+		
+		HttpResponse response = handler.handleRequest(request, server);
+		reader = new BufferedReader(new FileReader("test"));
+		String line = ((BufferedReader) reader).readLine();
+		
+		assertEquals(Protocol.OK_TEXT, response.getPhrase());
+		assertEquals("newTest", line);
 	}
 	
 	@After
