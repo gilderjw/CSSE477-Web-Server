@@ -5,12 +5,13 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
-import RequestHandlers.IRequestHandler;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
-import protocol.HttpResponseFactory;
 import protocol.Protocol;
 import protocol.ProtocolException;
+import request_handlers.IRequestHandler;
+import response_creators.Response400Creator;
+import response_creators.Response404Creator;
 
 /**
  * This class is responsible for handling a incoming request by creating a
@@ -80,13 +81,13 @@ public class ConnectionHandler implements Runnable {
 			// Protocol.BAD_REQUEST_CODE and Protocol.NOT_SUPPORTED_CODE
 			int status = pe.getStatus();
 			if (status == Protocol.BAD_REQUEST_CODE) {
-				response = HttpResponseFactory.create400BadRequest(Protocol.CLOSE);
+				response = Response404Creator.createResponse(Protocol.CLOSE);
 			}
 			// TODO: Handle version not supported code as well
 		} catch (Exception e) {
 			e.printStackTrace();
 			// For any other error, we will create bad request response as well
-			response = HttpResponseFactory.create400BadRequest(Protocol.CLOSE);
+			response = Response400Creator.createResponse(Protocol.CLOSE);
 		}
 
 		if (response != null) {
@@ -123,7 +124,7 @@ public class ConnectionHandler implements Runnable {
 		// So this is a temporary patch for that problem and should be removed
 		// after a response object is created for protocol version mismatch.
 		if (response == null) {
-			response = HttpResponseFactory.create400BadRequest(Protocol.CLOSE);
+			response = Response400Creator.createResponse(Protocol.CLOSE);
 		}
 
 		try {

@@ -1,4 +1,4 @@
-package RequestHandlers;
+package request_handlers;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;

@@ -25,8 +25,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import RequestHandlers.GetRequestHandler;
 import protocol.Protocol;
+import request_handlers.GetRequestHandler;
 
 /**
  * This represents a welcoming server for the incoming TCP request from a HTTP
