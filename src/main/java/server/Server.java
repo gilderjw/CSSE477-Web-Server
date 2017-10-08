@@ -24,11 +24,12 @@ package server;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import protocol.Protocol;
 import request_handlers.DeleteRequestHandler;
 import request_handlers.GetRequestHandler;
 import request_handlers.PutRequestHandler;
+import request_handlers.PostRequestHandler;
+import request_handlers.HeadRequestHandler;
 
 /**
  * This represents a welcoming server for the incoming TCP request from a HTTP
@@ -95,6 +96,8 @@ public class Server implements Runnable {
 				handler.addHandler(Protocol.GET, new GetRequestHandler());
 				handler.addHandler(Protocol.DELETE, new DeleteRequestHandler());
 				handler.addHandler(Protocol.PUT, new PutRequestHandler());
+				handler.addHandler(Protocol.POST, new PostRequestHandler());
+				handler.addHandler(Protocol.HEAD, new HeadRequestHandler());
 				new Thread(handler).start();
 			}
 			this.welcomeSocket.close();
@@ -125,7 +128,7 @@ public class Server implements Runnable {
 
 	/**
 	 * Checks if the server is stopeed or not.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isStoped() {
