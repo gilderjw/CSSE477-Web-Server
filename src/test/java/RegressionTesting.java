@@ -25,7 +25,7 @@ public class RegressionTesting {
 		try {
 
 			// Create connection
-			URL url = new URL("http://localhost:1337/" + file);
+			URL url = new URL("http://localhost:8080/" + file);
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod(type);
 
@@ -64,7 +64,7 @@ public class RegressionTesting {
 		// TODO: Server configuration, ideally we want to read these from an
 		// application.properties file
 		String rootDirectory = "webtest";
-		int port = 1337;
+		int port = 8080;
 
 		// Create a run the server
 		this.server = new Server(rootDirectory, port);
