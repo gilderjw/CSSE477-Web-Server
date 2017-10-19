@@ -25,13 +25,14 @@ import server.Server;
 
 public class RegressionTesting {
 	Server server;
+	public static final int PORT = 8081;
 
 	public HttpURLConnection request(String type, String file, String[][] headers, String body) {
 		HttpURLConnection connection = null;
 		try {
 
 			// Create connection
-			URL url = new URL("http://localhost:6942/" + file);
+			URL url = new URL("http://localhost:" + PORT + "/" + file);
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod(type);
 
@@ -70,10 +71,9 @@ public class RegressionTesting {
 		// TODO: Server configuration, ideally we want to read these from an
 		// application.properties file
 		String rootDirectory = "./webtest";
-		int port = 6942;
-
+		
 		// Create a run the server
-		this.server = new Server(rootDirectory, port);
+		this.server = new Server(rootDirectory, PORT);
 		server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
 		server.registerRequestHandler(Protocol.GET, new GetRequestHandler());
 		server.registerRequestHandler(Protocol.HEAD, new HeadRequestHandler());
