@@ -84,7 +84,7 @@ public class RegressionTesting {
 
 		// TODO: Instead of just printing to the console, use proper logging mechanism.
 		// SL4J/Log4J are some popular logging framework
-		System.out.format("Simple Web Server started at port %d and serving the %s directory ...%n", port,
+		System.out.format("Simple Web Server started at port %d and serving the %s directory ...%n", PORT,
 				rootDirectory);
 	}
 
