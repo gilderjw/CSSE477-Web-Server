@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
 
 import protocol.HttpRequest;
 import protocol.HttpResponse;
@@ -39,8 +40,8 @@ public class ConnectionHandler implements Runnable {
 		return this.socket;
 	}
 
-	public void addHandler(String s, IRequestHandler handler) {
-		this.handlers.put(s, handler);
+	public void setHandlers(Map<String, IRequestHandler> handlers) {
+		this.handlers = (HashMap<String, IRequestHandler>) handlers;
 	}
 
 	/**

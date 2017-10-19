@@ -1,5 +1,11 @@
 package app;
 
+import protocol.Protocol;
+import request_handlers.DeleteRequestHandler;
+import request_handlers.GetRequestHandler;
+import request_handlers.HeadRequestHandler;
+import request_handlers.PostRequestHandler;
+import request_handlers.PutRequestHandler;
 import server.Server;
 
 /**
@@ -15,6 +21,11 @@ public class SimpleWebServer {
 
 		// Create a run the server
 		Server server = new Server(rootDirectory, port);
+		server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
+		server.registerRequestHandler(Protocol.GET, new GetRequestHandler());
+		server.registerRequestHandler(Protocol.HEAD, new HeadRequestHandler());
+		server.registerRequestHandler(Protocol.DELETE, new DeleteRequestHandler());
+		server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
 		Thread runner = new Thread(server);
 		runner.start();
 

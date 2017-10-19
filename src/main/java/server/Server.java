@@ -24,12 +24,10 @@ package server;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+
 import protocol.Protocol;
-import request_handlers.DeleteRequestHandler;
-import request_handlers.GetRequestHandler;
-import request_handlers.PutRequestHandler;
-import request_handlers.PostRequestHandler;
-import request_handlers.HeadRequestHandler;
+import request_handlers.IRequestHandler;
 
 /**
  * This represents a welcoming server for the incoming TCP request from a HTTP
@@ -42,6 +40,7 @@ public class Server implements Runnable {
 	private int port;
 	private boolean stop;
 	private ServerSocket welcomeSocket;
+	private HashMap<String, IRequestHandler> handlers;
 
 	/**
 	 * @param rootDirectory
@@ -51,6 +50,7 @@ public class Server implements Runnable {
 		this.rootDirectory = rootDirectory;
 		this.port = port;
 		this.stop = false;
+		handlers = new HashMap<>();
 	}
 
 	/**
@@ -93,17 +93,17 @@ public class Server implements Runnable {
 				// Create a handler for this incoming connection and start the handler in a new
 				// thread
 				ConnectionHandler handler = new ConnectionHandler(this, connectionSocket);
-				handler.addHandler(Protocol.GET, new GetRequestHandler());
-				handler.addHandler(Protocol.DELETE, new DeleteRequestHandler());
-				handler.addHandler(Protocol.PUT, new PutRequestHandler());
-				handler.addHandler(Protocol.POST, new PostRequestHandler());
-				handler.addHandler(Protocol.HEAD, new HeadRequestHandler());
+				handler.setHandlers(handlers);
 				new Thread(handler).start();
 			}
 			this.welcomeSocket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void registerRequestHandler(String protocol, IRequestHandler handler) {
+		handlers.put(protocol, handler);
 	}
 
 	/**
