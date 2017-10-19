@@ -11,8 +11,7 @@ import protocol.HttpResponse;
 import protocol.Protocol;
 import protocol.ProtocolException;
 import request_handlers.IRequestHandler;
-import response_creators.Response400Creator;
-import response_creators.Response404Creator;
+import response_creators.ResponseCreator;
 
 /**
  * This class is responsible for handling a incoming request by creating a
@@ -72,6 +71,9 @@ public class ConnectionHandler implements Runnable {
 		// Now lets create a HttpRequest object
 		HttpRequest request = null;
 		HttpResponse response = null;
+		ResponseCreator rc = new ResponseCreator();
+		rc.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE)
+			.setResponseVersion(Protocol.VERSION);
 		try {
 			request = HttpRequest.read(inStream);
 			System.out.println(request);
@@ -82,13 +84,22 @@ public class ConnectionHandler implements Runnable {
 			// Protocol.BAD_REQUEST_CODE and Protocol.NOT_SUPPORTED_CODE
 			int status = pe.getStatus();
 			if (status == Protocol.BAD_REQUEST_CODE) {
-				response = Response404Creator.createResponse(Protocol.CLOSE);
+				response = rc.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
+					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+					.getResponse();
+			} else if (status == Protocol.NOT_FOUND_CODE){
+				response = rc.setResponseFile(null).setResponseStatus(Protocol.NOT_FOUND_CODE)
+						.setResponsePhrase(Protocol.NOT_FOUND_TEXT)
+						.getResponse();
 			}
-			// TODO: Handle version not supported code as well
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			// For any other error, we will create bad request response as well
-			response = Response400Creator.createResponse(Protocol.CLOSE);
+			response = rc
+					.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
+					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+					.getResponse();
 		}
 
 		if (response != null) {
@@ -114,6 +125,9 @@ public class ConnectionHandler implements Runnable {
 				// Here you checked that the "Protocol.VERSION" string is not equal to the
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
+				response = rc.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
+						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+						.getResponse();
 			} else {
 				response = this.handlers.get(request.getMethod()).handleRequest(request, this.server);
 			}
@@ -125,7 +139,9 @@ public class ConnectionHandler implements Runnable {
 		// So this is a temporary patch for that problem and should be removed
 		// after a response object is created for protocol version mismatch.
 		if (response == null) {
-			response = Response400Creator.createResponse(Protocol.CLOSE);
+			response = rc.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
+					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+					.getResponse();
 		}
 
 		try {

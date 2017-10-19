@@ -7,7 +7,7 @@ import java.io.IOException;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
-import response_creators.Response200Creator;
+import response_creators.ResponseCreator;
 import server.Server;
 
 public class PutRequestHandler implements IRequestHandler {
@@ -20,6 +20,9 @@ public class PutRequestHandler implements IRequestHandler {
 		File file = new File(rootDirectory + uri);
 
 		HttpResponse response;
+		ResponseCreator rc = new ResponseCreator();
+		rc.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE)
+			.setResponseVersion(Protocol.VERSION);
 		try {
 			FileWriter fw = new FileWriter(file, false);
 			fw.write(request.getBody());
@@ -28,7 +31,10 @@ public class PutRequestHandler implements IRequestHandler {
 			e.printStackTrace();
 		}
 		
-		response = Response200Creator.createResponse(file, Protocol.CLOSE);
+		response = rc.setResponseStatus(Protocol.OK_CODE)
+				.setResponsePhrase(Protocol.OK_TEXT)
+				.setResponseFile(file)
+				.getResponse();
 		
 		return response;
 	}

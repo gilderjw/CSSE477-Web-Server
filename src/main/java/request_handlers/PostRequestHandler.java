@@ -8,8 +8,7 @@ import java.io.IOException;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
-import response_creators.Response200Creator;
-import response_creators.Response400Creator;
+import response_creators.ResponseCreator;
 import server.Server;
 
 public class PostRequestHandler implements IRequestHandler {
@@ -24,27 +23,42 @@ public class PostRequestHandler implements IRequestHandler {
 		File file = new File(rootDirectory + uri);
 
 		HttpResponse response;
+		ResponseCreator rc = new ResponseCreator();
+		rc.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE)
+			.setResponseVersion(Protocol.VERSION);
 
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return Response400Creator.createResponse(Protocol.CLOSE);
+				return rc.setResponseStatus(Protocol.BAD_REQUEST_CODE)
+						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+						.setResponseFile(null)
+						.getResponse();
 			}
 		}
 
 		if (file.isDirectory()) {
-			response = Response400Creator.createResponse(Protocol.CLOSE);
+			response = rc.setResponseStatus(Protocol.BAD_REQUEST_CODE)
+					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+					.setResponseFile(null)
+					.getResponse();
 		} else { // Its a file
 			try {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsolutePath(), true));
 				writer.write(request.getBody());
 				writer.close();
-				response = Response200Creator.createResponse(file, Protocol.CLOSE);
+				response = rc.setResponseStatus(Protocol.OK_CODE)
+						.setResponsePhrase(Protocol.OK_TEXT)
+						.setResponseFile(file)
+						.getResponse();
 			} catch (IOException e) {
 				e.printStackTrace();
-				response = Response400Creator.createResponse(Protocol.CLOSE);
+				response = rc.setResponseStatus(Protocol.BAD_REQUEST_CODE)
+						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+						.setResponseFile(null)
+						.getResponse();
 			}
 		}
 

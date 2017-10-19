@@ -15,7 +15,6 @@ import protocol.HttpResponse;
 import protocol.Protocol;
 import request_handlers.DeleteRequestHandler;
 import request_handlers.IRequestHandler;
-import response_creators.DeleteResponse200Creator;
 import server.Server;
 
 public class TestDeleteRequestHandler {
@@ -28,30 +27,6 @@ public class TestDeleteRequestHandler {
 	public void setup() throws IOException {
 		file = new File("temp");
 		file.createNewFile();
-	}
-
-	@Test
-	public void testDelete200ResponseCreatorOK() {
-		boolean successful = true;
-		
-		HttpResponse response = DeleteResponse200Creator.createResponse(successful, null);
-		
-		assertEquals(response.getVersion(), Protocol.VERSION);
-		assertEquals(response.getStatus(), Protocol.OK_CODE);
-		assertEquals(response.getPhrase(), Protocol.DELETE_OK_TEXT);
-		assertEquals(response.getFile(), null);
-	}
-	
-	@Test
-	public void testDelete200ResponseCreatorNOK() {
-		boolean successful = false;
-		
-		HttpResponse response = DeleteResponse200Creator.createResponse(successful, null);
-		
-		assertEquals(Protocol.VERSION, response.getVersion());
-		assertEquals(Protocol.OK_CODE, response.getStatus());
-		assertEquals(Protocol.DELETE_NOK_TEXT, response.getPhrase());
-		assertEquals(null, response.getFile());
 	}
 	
 	@Test

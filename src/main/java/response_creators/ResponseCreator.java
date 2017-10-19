@@ -1,12 +1,47 @@
 package response_creators;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import protocol.HttpResponse;
 import protocol.Protocol;
 
-public abstract class ResponseCreator {
+public class ResponseCreator {
+
+	private HttpResponse response;
+
+	public ResponseCreator() {
+		this.response = new HttpResponse();
+		this.response.setHeader(new HashMap<String, String>());
+	}
+
+	public HttpResponse getResponse() {
+		return this.response;
+	}
+
+	public ResponseCreator setResponseVersion(String version) {
+		this.response.setVersion(version);
+		return this;
+	}
+
+	public ResponseCreator setResponseStatus(int status) {
+		this.response.setStatus(status);
+		return this;
+	}
+
+	public ResponseCreator setResponsePhrase(String phrase) {
+		this.response.setPhrase(phrase);
+		return this;
+	}
+
+	public ResponseCreator setResponseFile(File file) {
+		this.response.setFile(file);
+		return this;
+	}
+
 	/**
 	 * Convenience method for adding general header to the supplied response object.
 	 *
@@ -17,7 +52,7 @@ public abstract class ResponseCreator {
 	 *            Supported values are {@link Protocol#OPEN} and
 	 *            {@link Protocol#CLOSE}.
 	 */
-	protected static void fillGeneralHeader(HttpResponse response, String connection) {
+	public ResponseCreator fillGeneralHeader(HttpResponse response, String connection) {
 		// Lets add Connection header
 		response.put(Protocol.CONNECTION, connection);
 
@@ -30,5 +65,8 @@ public abstract class ResponseCreator {
 
 		// Lets add extra header with provider info
 		response.put(Protocol.PROVIDER, Protocol.AUTHOR);
+		
+		return this;
 	}
+
 }

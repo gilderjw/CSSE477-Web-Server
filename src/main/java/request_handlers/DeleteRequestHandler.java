@@ -5,9 +5,7 @@ import java.io.File;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
-import response_creators.DeleteResponse200Creator;
-import response_creators.Response200Creator;
-import response_creators.Response404Creator;
+import response_creators.ResponseCreator;
 import server.Server;
 
 public class DeleteRequestHandler implements IRequestHandler {
@@ -21,7 +19,11 @@ public class DeleteRequestHandler implements IRequestHandler {
 		File file = new File(rootDirectory + uri);
 
 		HttpResponse response;
-		
+		ResponseCreator rc = new ResponseCreator();
+		rc.setResponseVersion(Protocol.VERSION)
+		 	.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE)
+		 	.setResponseFile(null);
+
 		// Check if the file exists
 		if (file.exists()) {
 			if (file.isDirectory()) {
@@ -30,20 +32,28 @@ public class DeleteRequestHandler implements IRequestHandler {
 				file = new File(location);
 				if (file.exists()) {
 					// Create Delete 200 OK response
-					boolean successfulDelete = file.delete();
-					response = DeleteResponse200Creator.createResponse(successfulDelete, Protocol.CLOSE);
+					file.delete();
+					response = rc.setResponseStatus(Protocol.OK_CODE)
+						.setResponsePhrase(Protocol.DELETE_OK_TEXT)
+						.getResponse();
 				} else {
 					// File does not exist so lets create 404 file not found code
-					response = Response404Creator.createResponse(Protocol.CLOSE);
+					response = rc.setResponseStatus(Protocol.NOT_FOUND_CODE)
+							.setResponsePhrase(Protocol.NOT_FOUND_TEXT)
+							.getResponse();
 				}
 			} else { // Its a file
 						// Lets create 200 OK response
-				boolean successfulDelete = file.delete();
-				response = DeleteResponse200Creator.createResponse(successfulDelete, Protocol.CLOSE);
+				file.delete();
+				response = rc.setResponseStatus(Protocol.OK_CODE)
+						.setResponsePhrase(Protocol.DELETE_OK_TEXT)
+						.getResponse();
 			}
 		} else {
 			// File does not exist so lets create 404 file not found code
-			response = Response404Creator.createResponse(Protocol.CLOSE);
+			response = rc.setResponseStatus(Protocol.NOT_FOUND_CODE)
+					.setResponsePhrase(Protocol.NOT_FOUND_TEXT)
+					.getResponse();
 		}
 		return response;
 	}

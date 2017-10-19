@@ -89,8 +89,11 @@ public class RegressionTesting {
 	}
 
 	@After
-	public void tearDown() throws IOException {
+	public void tearDown() throws IOException, InterruptedException {
 		this.server.stop();
+		while(!this.server.isStoped()) {
+			Thread.sleep(1000);
+		}
 
 		File postTxt = new File("webtest/post.txt");
 		postTxt.delete();
@@ -153,11 +156,7 @@ public class RegressionTesting {
 		String line;
 		while ((line = rd.readLine()) != null) {
 			response.append(line);
-			if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-				response.append("\r\n");
-			} else {
-				response.append("\n");
-			}	
+			response.append("\r\n");
 		}
 		rd.close();
 		assertEquals(200, connection.getResponseCode());
@@ -170,20 +169,11 @@ public class RegressionTesting {
 		response = new StringBuilder();
 		while ((line = rd.readLine()) != null) {
 			response.append(line);
-			if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-				response.append("\r\n");
-			} else {
-				response.append("\n");
-			}	
+			response.append("\r\n");
 		}
 		rd.close();
 		assertEquals(200, connection.getResponseCode());
-		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-			assertEquals(stuffToPost + "\r\n", response.toString());
-		} else {
-			assertEquals(stuffToPost + "\n", response.toString());
-		}	
-		
+		assertEquals(stuffToPost + "\r\n", response.toString());
 	}
 
 	@Test

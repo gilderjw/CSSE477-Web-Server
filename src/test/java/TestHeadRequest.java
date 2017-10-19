@@ -15,7 +15,6 @@ import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
 import request_handlers.HeadRequestHandler;
-import response_creators.Response200NoPayloadCreator;
 import server.Server;
 
 public class TestHeadRequest {
@@ -26,17 +25,6 @@ public class TestHeadRequest {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(f.getName()));
 		writer.write("This text should not be returned in the HEAD request");
 		writer.close();
-	}
-
-	@Test
-	public void test200NoPayloadCreator() {
-		File f = new File("temp");
-
-		HttpResponse resp = Response200NoPayloadCreator.createResponse(f, Protocol.CLOSE);
-		assertEquals(null, resp.getFile());
-		assertEquals(200, resp.getStatus());
-		assertEquals(Protocol.VERSION, resp.getVersion());
-		assertEquals(Protocol.OK_TEXT, resp.getPhrase());
 	}
 
 	@Test
