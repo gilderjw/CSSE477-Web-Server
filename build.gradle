@@ -59,6 +59,7 @@ jacocoTestReport {
 
 
 test {
+    testLogging.showStandardStreams = true
 	jacoco {
 		append = false
 	}
