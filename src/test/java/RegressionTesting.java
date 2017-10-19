@@ -126,7 +126,7 @@ public class RegressionTesting {
 	@Test
 	public void testGet() throws IOException {
 		// good get
-		HttpURLConnection connection = this.request("GET", "get.txt", null, null);
+		HttpURLConnection connection = this.request("GET", "./get.txt", null, null);
 		InputStream is = connection.getInputStream();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 		StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
@@ -140,7 +140,7 @@ public class RegressionTesting {
 		assertEquals("Got this file, fam\r\n", response.toString());
 
 		// 404 get
-		connection = this.request("GET", "get.fakenews", null, null);
+		connection = this.request("GET", "./get.fakenews", null, null);
 		assertEquals(404, connection.getResponseCode());
 
 	}
@@ -150,7 +150,7 @@ public class RegressionTesting {
 		String stuffToPost = "posted stuff";
 
 		// exist POST
-		HttpURLConnection connection = this.request("POST", "post.txt", null, stuffToPost);
+		HttpURLConnection connection = this.request("POST", "./post.txt", null, stuffToPost);
 		InputStream is = connection.getInputStream();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 		StringBuilder response = new StringBuilder();
@@ -164,7 +164,7 @@ public class RegressionTesting {
 		assertEquals("post that good stuff here:" + stuffToPost + "\r\n", response.toString());
 
 		// noexist post
-		connection = this.request("POST", "post.fakenews", null, stuffToPost);
+		connection = this.request("POST", "./post.fakenews", null, stuffToPost);
 		is = connection.getInputStream();
 		rd = new BufferedReader(new InputStreamReader(is));
 		response = new StringBuilder();
@@ -182,7 +182,7 @@ public class RegressionTesting {
 
 		// get thing
 
-		HttpURLConnection connection = this.request("GET", "delete.txt", null, null);
+		HttpURLConnection connection = this.request("GET", "./delete.txt", null, null);
 		InputStream is = connection.getInputStream();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 		StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
@@ -196,15 +196,15 @@ public class RegressionTesting {
 		assertEquals("delete me\r\n", response.toString());
 
 		// remove thing
-		connection = this.request("DELETE", "delete.txt", null, null);
+		connection = this.request("DELETE", "./delete.txt", null, null);
 		assertEquals(200, connection.getResponseCode());
 
 		// it's not there
-		connection = this.request("GET", "delete.txt", null, null);
+		connection = this.request("GET", "./delete.txt", null, null);
 		assertEquals(404, connection.getResponseCode());
 
 		// noexist DELETE
-		connection = this.request("DELETE", "delete.fakenews", null, null);
+		connection = this.request("DELETE", "./delete.fakenews", null, null);
 		assertEquals(404, connection.getResponseCode());
 	}
 
@@ -212,7 +212,7 @@ public class RegressionTesting {
 	public void testPut() throws IOException {
 		String stuffToPost = "put stuff";
 		// exist POST
-		HttpURLConnection connection = this.request("PUT", "put.txt", null, stuffToPost);
+		HttpURLConnection connection = this.request("PUT", "./put.txt", null, stuffToPost);
 		InputStream is = connection.getInputStream();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 		StringBuilder response = new StringBuilder();
@@ -226,7 +226,7 @@ public class RegressionTesting {
 		assertEquals(stuffToPost + "\r\n", response.toString());
 
 		// noexist post
-		connection = this.request("PUT", "put.fakenews", null, stuffToPost);
+		connection = this.request("PUT", "./put.fakenews", null, stuffToPost);
 		is = connection.getInputStream();
 		rd = new BufferedReader(new InputStreamReader(is));
 		response = new StringBuilder();
@@ -242,14 +242,14 @@ public class RegressionTesting {
 	@Test
 	public void testHead() throws IOException {
 		// good HEAD
-		HttpURLConnection connection = this.request("HEAD", "get.txt", null, null);
+		HttpURLConnection connection = this.request("HEAD", "./get.txt", null, null);
 		InputStream is = connection.getInputStream();
 
 		assertEquals(200, connection.getResponseCode());
 		assertEquals(-1, connection.getInputStream().read());
 
 		// 404 head
-		connection = this.request("HEAD", "get.fakenews", null, null);
+		connection = this.request("HEAD", "./get.fakenews", null, null);
 		assertEquals(404, connection.getResponseCode());
 
 	}
