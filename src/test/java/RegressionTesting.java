@@ -153,7 +153,11 @@ public class RegressionTesting {
 		String line;
 		while ((line = rd.readLine()) != null) {
 			response.append(line);
-			response.append("\r\n");
+			if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+				response.append("\r\n");
+			} else {
+				response.append("\n");
+			}	
 		}
 		rd.close();
 		assertEquals(200, connection.getResponseCode());
@@ -166,11 +170,20 @@ public class RegressionTesting {
 		response = new StringBuilder();
 		while ((line = rd.readLine()) != null) {
 			response.append(line);
-			response.append("\r\n");
+			if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+				response.append("\r\n");
+			} else {
+				response.append("\n");
+			}	
 		}
 		rd.close();
 		assertEquals(200, connection.getResponseCode());
-		assertEquals(stuffToPost + "\r\n", response.toString());
+		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+			assertEquals(stuffToPost + "\r\n", response.toString());
+		} else {
+			assertEquals(stuffToPost + "\n", response.toString());
+		}	
+		
 	}
 
 	@Test
