@@ -41,6 +41,11 @@ public class ResponseCreator {
 		this.response.setFile(file);
 		return this;
 	}
+	
+	public ResponseCreator addHeader(String key, String value) {
+		this.response.setHeader(key, value);
+		return this;
+	}
 
 	/**
 	 * Convenience method for adding general header to the supplied response object.

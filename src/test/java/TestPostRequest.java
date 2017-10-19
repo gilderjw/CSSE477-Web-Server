@@ -37,7 +37,7 @@ public class TestPostRequest {
 		HttpRequest req = HttpRequest
 				.read(new ByteArrayInputStream(requestString.getBytes(StandardCharsets.UTF_8.name())));
 
-		System.out.println(req);
+//		System.out.println(req);
 
 		Server serv = new Server("./", 8080);
 		HttpResponse resp = new PostRequestHandler().handleRequest(req, serv);
@@ -62,7 +62,7 @@ public class TestPostRequest {
 		HttpRequest req = HttpRequest
 				.read(new ByteArrayInputStream(requestString.getBytes(StandardCharsets.UTF_8.name())));
 
-		System.out.println(req);
+//		System.out.println(req);
 
 		Server serv = new Server("./", 8080);
 		HttpResponse resp = new PostRequestHandler().handleRequest(req, serv);

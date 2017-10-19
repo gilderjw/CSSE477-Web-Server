@@ -47,7 +47,7 @@ public class RegressionTesting {
 			connection.setDoOutput(true);
 
 			if (body != null) {
-				System.out.println("hue");
+				
 				DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
 				wr.writeBytes(body);
 				wr.close();

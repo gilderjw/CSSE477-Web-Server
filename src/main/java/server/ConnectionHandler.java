@@ -76,7 +76,7 @@ public class ConnectionHandler implements Runnable {
 			.setResponseVersion(Protocol.VERSION);
 		try {
 			request = HttpRequest.read(inStream);
-			System.out.println(request);
+//			System.out.println(request);
 		} catch (ProtocolException pe) {
 			// We have some sort of protocol exception. Get its status code and create
 			// response

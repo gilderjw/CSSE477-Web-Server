@@ -222,4 +222,8 @@ public class HttpResponse {
 		return buffer.toString();
 	}
 
+	public void setHeader(String key, String value) {
+		this.header.put(key, value);		
+	}
+
 }

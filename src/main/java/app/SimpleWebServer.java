@@ -1,5 +1,10 @@
 package app;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 import protocol.Protocol;
 import request_handlers.DeleteRequestHandler;
 import request_handlers.GetRequestHandler;
@@ -14,10 +19,14 @@ import server.Server;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class SimpleWebServer {
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
 		// TODO: Server configuration, ideally we want to read these from an application.properties file
-		String rootDirectory = "web"; 
-		int port = 8080;
+		Properties prop = new Properties();
+		prop.load(new FileInputStream("application.properties"));
+		
+		String rootDirectory = prop.getProperty("root_directory"); 
+		int port = Integer.parseInt((String) prop.get("port_number"));
+		
 
 		// Create a run the server
 		Server server = new Server(rootDirectory, port);
