@@ -12,7 +12,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import protocol.Protocol;
@@ -24,7 +26,7 @@ import request_handlers.PutRequestHandler;
 import server.Server;
 
 public class RegressionTesting {
-	Server server;
+	static Server server;
 	public static final int PORT = 8081;
 
 	public HttpURLConnection request(String type, String file, String[][] headers, String body) {
@@ -45,6 +47,7 @@ public class RegressionTesting {
 			connection.setDoOutput(true);
 
 			if (body != null) {
+				System.out.println("hue");
 				DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
 				wr.writeBytes(body);
 				wr.close();
@@ -66,20 +69,20 @@ public class RegressionTesting {
 		return null;
 	}
 
-	@Before
-	public void setUp() throws InterruptedException {
+	@BeforeClass
+	public static void setUp() throws InterruptedException {
 		// TODO: Server configuration, ideally we want to read these from an
 		// application.properties file
 		String rootDirectory = "./webtest";
 		
 		// Create a run the server
-		this.server = new Server(rootDirectory, PORT);
+		server = new Server(rootDirectory, PORT);
 		server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
 		server.registerRequestHandler(Protocol.GET, new GetRequestHandler());
 		server.registerRequestHandler(Protocol.HEAD, new HeadRequestHandler());
 		server.registerRequestHandler(Protocol.DELETE, new DeleteRequestHandler());
 		server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
-		Thread runner = new Thread(this.server);
+		Thread runner = new Thread(server);
 		runner.start();
 
 		// TODO: Instead of just printing to the console, use proper logging mechanism.
@@ -88,10 +91,10 @@ public class RegressionTesting {
 				rootDirectory);
 	}
 
-	@After
-	public void tearDown() throws IOException, InterruptedException {
-		this.server.stop();
-		while(!this.server.isStoped()) {
+	@AfterClass
+	public static void tearDown() throws IOException, InterruptedException {
+		server.stop();
+		while(!server.isStoped()) {
 			Thread.sleep(1000);
 			System.out.println("Server stoppping");
 		}
