@@ -93,6 +93,7 @@ public class RegressionTesting {
 		this.server.stop();
 		while(!this.server.isStoped()) {
 			Thread.sleep(1000);
+			System.out.println("Server stoppping");
 		}
 
 		File postTxt = new File("webtest/post.txt");
