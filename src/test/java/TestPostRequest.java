@@ -61,14 +61,12 @@ public class TestPostRequest {
 		HttpRequest req = HttpRequest
 				.read(new ByteArrayInputStream(requestString.getBytes(StandardCharsets.UTF_8.name())));
 
-//		System.out.println(req);
-
 		Server serv = new Server("./", 8080);
 		HttpResponse resp = new PostRequestHandler().handleRequest(req, serv);
 
-		File respFile = resp.getFile();
+//		File respFile = resp.getFile();
 
-		String newcontents = new String(Files.readAllBytes(respFile.toPath()));
+//		String newcontents = new String(Files.readAllBytes(respFile.toPath()));
 
 		// assertEquals((contents + appended).length(), respFile.length());
 

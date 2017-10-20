@@ -1,7 +1,6 @@
 package app;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -25,11 +24,16 @@ public class SimpleWebServer {
 	
 	static final Logger log = LogManager.getLogger(SimpleWebServer.class);
 	
-	public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
+	public static void main(String[] args) {
 		// TODO: Server configuration, ideally we want to read these from an application.properties file
 		
 		Properties prop = new Properties();
-		prop.load(new FileInputStream("application.properties"));
+		try {
+			prop.load(new FileInputStream("application.properties"));
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			log.error(e.getStackTrace().toString());
+		}
 		
 		String rootDirectory = prop.getProperty("root_directory"); 
 		int port = Integer.parseInt((String) prop.get("port_number"));
@@ -44,13 +48,15 @@ public class SimpleWebServer {
 		server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
 		Thread runner = new Thread(server);
 		runner.start();
-
 		
-		// TODO: Instead of just printing to the console, use proper logging mechanism.
-		// SL4J/Log4J are some popular logging framework
-		System.out.format("Simple Web Server started at port %d and serving the %s directory ...%n", port, rootDirectory);
+		log.info("Simple Web Server started at port %d and serving the %s directory ...%n", port, rootDirectory);
 		
 		// Wait for the server thread to terminate
-		runner.join();
+		try {
+			runner.join();
+		} catch (InterruptedException e) {
+			log.error(e.getMessage());
+			log.error(e.getStackTrace().toString());
+		}
 	}
 }

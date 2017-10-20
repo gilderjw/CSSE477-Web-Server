@@ -8,12 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Represents a request object for HTTP.
  * 
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class HttpRequest {
+	static final Logger log = LogManager.getLogger(HttpRequest.class);
+	
 	private String method;
 	private String uri;
 	private String version;
@@ -85,6 +90,8 @@ public class HttpRequest {
 		String line = reader.readLine(); // A line ends with either a \r, or a \n, or both
 		
 		if(line == null) {
+			log.error("ERROR: Line is null in HttpRequest read method");
+			log.error(Protocol.BAD_REQUEST_TEXT);
 			throw new ProtocolException(Protocol.BAD_REQUEST_CODE, Protocol.BAD_REQUEST_TEXT);
 		}
 		
@@ -93,6 +100,8 @@ public class HttpRequest {
 		
 		// Error checking the first line must have exactly three elements
 		if(tokenizer.countTokens() != 3) {
+			log.error("ERROR: first line doesn't have exactly three elements in HttpRequest read method");
+			log.error(Protocol.BAD_REQUEST_TEXT);
 			throw new ProtocolException(Protocol.BAD_REQUEST_CODE, Protocol.BAD_REQUEST_TEXT);
 		}
 		
@@ -142,7 +151,10 @@ public class HttpRequest {
 		try {
 			contentLength = Integer.parseInt(request.header.get(Protocol.CONTENT_LENGTH.toLowerCase()));
 		}
-		catch(Exception e){}
+		catch(Exception e){
+			log.error(e.getMessage());
+			log.error(e.getStackTrace().toString());
+		}
 		
 		if(contentLength > 0) {
 			request.body = new char[contentLength];
