@@ -153,7 +153,6 @@ public class HttpRequest {
 		}
 		catch(Exception e){
 			log.error(e.getMessage());
-			log.error(e.getStackTrace().toString());
 		}
 		
 		if(contentLength > 0) {

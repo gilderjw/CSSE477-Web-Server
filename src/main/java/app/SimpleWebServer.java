@@ -32,7 +32,6 @@ public class SimpleWebServer {
 			prop.load(new FileInputStream("application.properties"));
 		} catch (IOException e) {
 			log.error(e.getMessage());
-			log.error(e.getStackTrace().toString());
 		}
 		
 		String rootDirectory = prop.getProperty("root_directory"); 
@@ -56,7 +55,6 @@ public class SimpleWebServer {
 			runner.join();
 		} catch (InterruptedException e) {
 			log.error(e.getMessage());
-			log.error(e.getStackTrace().toString());
 		}
 	}
 }

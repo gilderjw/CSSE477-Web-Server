@@ -167,7 +167,6 @@ public class HttpResponse {
 			out.write(line.getBytes());
 		} catch (IOException e) {
 			log.error(e.getMessage());
-			log.error(e.getStackTrace().toString());
 		}
 
 		// Write header fields if there is something to write in header field
@@ -182,7 +181,6 @@ public class HttpResponse {
 					out.write(line.getBytes());
 				} catch (IOException e) {
 					log.error(e.getMessage());
-					log.error(e.getStackTrace().toString());
 				}
 			}
 		}
@@ -192,7 +190,6 @@ public class HttpResponse {
 			out.write(Protocol.CRLF.getBytes());
 		} catch (IOException e) {
 			log.error(e.getMessage());
-			log.error(e.getStackTrace().toString());
 		}
 
 		// We are reading a file
@@ -203,7 +200,6 @@ public class HttpResponse {
 				fileInStream = new FileInputStream(file);
 			} catch (FileNotFoundException e) {
 				log.error(e.getMessage());
-				log.error(e.getStackTrace().toString());
 			}
 			BufferedInputStream inStream = new BufferedInputStream(fileInStream, Protocol.CHUNK_LENGTH);
 
@@ -217,14 +213,12 @@ public class HttpResponse {
 				}
 			} catch (IOException e) {
 				log.error(e.getMessage());
-				log.error(e.getStackTrace().toString());
 			}
 			// Close the file input stream, we are done reading
 			try {
 				inStream.close();
 			} catch (IOException e) {
 				log.error(e.getMessage());
-				log.error(e.getStackTrace().toString());
 			}
 		}
 
@@ -233,7 +227,6 @@ public class HttpResponse {
 			out.flush();
 		} catch (IOException e) {
 			log.error(e.getMessage());
-			log.error(e.getStackTrace().toString());
 		}
 	}
 

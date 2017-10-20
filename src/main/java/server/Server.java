@@ -103,7 +103,6 @@ public class Server implements Runnable {
 			this.welcomeSocket.close();
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			log.error(e.getStackTrace().toString());
 		}
 	}
 	
@@ -129,7 +128,6 @@ public class Server implements Runnable {
 			socket.close();
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			log.error(e.getStackTrace().toString());
 		}
 	}
 
