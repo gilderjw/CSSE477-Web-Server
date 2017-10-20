@@ -25,7 +25,7 @@ import server.Server;
 
 public class RegressionTesting {
 	static Server server;
-	public static final int PORT = 8081;
+	public static final int PORT = 1224;
 
 	public HttpURLConnection request(String type, String file, String[][] headers, String body) {
 		HttpURLConnection connection = null;
@@ -45,7 +45,7 @@ public class RegressionTesting {
 			connection.setDoOutput(true);
 
 			if (body != null) {
-				
+
 				DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
 				wr.writeBytes(body);
 				wr.close();
@@ -72,7 +72,7 @@ public class RegressionTesting {
 		// TODO: Server configuration, ideally we want to read these from an
 		// application.properties file
 		String rootDirectory = "./webtest";
-		
+
 		// Create a run the server
 		server = new Server(rootDirectory, PORT);
 		server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
@@ -92,7 +92,7 @@ public class RegressionTesting {
 	@AfterClass
 	public static void tearDown() throws IOException, InterruptedException {
 		server.stop();
-		while(!server.isStoped()) {
+		while (!server.isStoped()) {
 			Thread.sleep(1000);
 			System.out.println("Server stoppping");
 		}
