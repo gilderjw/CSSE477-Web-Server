@@ -6,6 +6,9 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
@@ -22,6 +25,8 @@ import response_creators.ResponseCreator;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class ConnectionHandler implements Runnable {
+	static final Logger log = LogManager.getLogger(ConnectionHandler.class);
+	
 	private Server server;
 	private Socket socket;
 	private HashMap<String, IRequestHandler> handlers;
@@ -63,7 +68,8 @@ public class ConnectionHandler implements Runnable {
 		} catch (Exception e) {
 			// Cannot do anything if we have exception reading input or output stream
 			// May be have text to log this for further analysis?
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.error(e.getStackTrace().toString());
 			return;
 		}
 
@@ -76,7 +82,6 @@ public class ConnectionHandler implements Runnable {
 			.setResponseVersion(Protocol.VERSION);
 		try {
 			request = HttpRequest.read(inStream);
-//			System.out.println(request);
 		} catch (ProtocolException pe) {
 			// We have some sort of protocol exception. Get its status code and create
 			// response
@@ -94,7 +99,8 @@ public class ConnectionHandler implements Runnable {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.error(e.getStackTrace().toString());
 			// For any other error, we will create bad request response as well
 			response = rc
 					.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
@@ -106,10 +112,10 @@ public class ConnectionHandler implements Runnable {
 			// Means there was an error, now write the response object to the socket
 			try {
 				response.write(outStream);
-				// System.out.println(response);
 			} catch (Exception e) {
 				// We will ignore this exception
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.error(e.getStackTrace().toString());
 			}
 
 			return;
@@ -132,7 +138,8 @@ public class ConnectionHandler implements Runnable {
 				response = this.handlers.get(request.getMethod()).handleRequest(request, this.server);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.error(e.getStackTrace().toString());
 		}
 
 		// TODO: So far response could be null for protocol version mismatch.
@@ -151,7 +158,8 @@ public class ConnectionHandler implements Runnable {
 			this.socket.close();
 		} catch (Exception e) {
 			// We will ignore this exception
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.error(e.getStackTrace().toString());
 		}
 	}
 }

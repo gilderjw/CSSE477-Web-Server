@@ -19,8 +19,6 @@ import server.Server;
 
 public class TestDeleteRequestHandler {
 	
-	// Test response creator and requesthandler
-	
 	private File file, file1;
 	private File dir;
 	

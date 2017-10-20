@@ -62,7 +62,6 @@ public class GetRequestHandler implements IRequestHandler {
 					.setResponseFile(null)
 					.getResponse();
 		}
-		System.out.println(response);
 		return response;
 	}
 }
