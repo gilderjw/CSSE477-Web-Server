@@ -24,7 +24,7 @@ staging:
     - gcloud
     - java
   only:
-    - tags
+    - master
     
 production:
   stage: production
