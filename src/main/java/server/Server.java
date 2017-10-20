@@ -26,7 +26,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-import protocol.Protocol;
 import request_handlers.IRequestHandler;
 
 /**
@@ -49,8 +48,8 @@ public class Server implements Runnable {
 	public Server(String rootDirectory, int port) {
 		this.rootDirectory = rootDirectory;
 		this.port = port;
-		this.stop = false;
-		handlers = new HashMap<>();
+		this.stop = true;
+		this.handlers = new HashMap<>();
 	}
 
 	/**
@@ -79,7 +78,7 @@ public class Server implements Runnable {
 	public void run() {
 		try {
 			this.welcomeSocket = new ServerSocket(this.port);
-
+			this.stop = false;
 			// Now keep welcoming new connections until stop flag is set to true
 			while (true) {
 				// Listen for incoming socket connection
@@ -93,7 +92,7 @@ public class Server implements Runnable {
 				// Create a handler for this incoming connection and start the handler in a new
 				// thread
 				ConnectionHandler handler = new ConnectionHandler(this, connectionSocket);
-				handler.setHandlers(handlers);
+				handler.setHandlers(this.handlers);
 				new Thread(handler).start();
 			}
 			this.welcomeSocket.close();
@@ -101,9 +100,9 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void registerRequestHandler(String protocol, IRequestHandler handler) {
-		handlers.put(protocol, handler);
+		this.handlers.put(protocol, handler);
 	}
 
 	/**
