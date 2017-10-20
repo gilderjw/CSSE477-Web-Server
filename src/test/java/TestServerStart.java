@@ -28,8 +28,11 @@ import server.Server;
 public class TestServerStart {
 
 	@Test
-	public void test() {
+	public void test() throws InterruptedException {
 		Server serv = new Server("web", 8080);
+		serv.stop();
+		while (!serv.isStoped()) {
+			Thread.sleep(100);
+		}
 	}
-
 }

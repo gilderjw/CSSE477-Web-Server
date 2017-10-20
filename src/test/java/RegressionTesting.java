@@ -11,9 +11,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -240,20 +238,5 @@ public class RegressionTesting {
 		rd.close();
 		assertEquals(200, connection.getResponseCode());
 		assertEquals(stuffToPost + "\r\n", response.toString());
-	}
-
-	@Test
-	public void testHead() throws IOException {
-		// good HEAD
-		HttpURLConnection connection = this.request("HEAD", "get.txt", null, null);
-		InputStream is = connection.getInputStream();
-
-		assertEquals(200, connection.getResponseCode());
-		assertEquals(-1, connection.getInputStream().read());
-
-		// 404 head
-		connection = this.request("HEAD", "get.fakenews", null, null);
-		assertEquals(404, connection.getResponseCode());
-
 	}
 }

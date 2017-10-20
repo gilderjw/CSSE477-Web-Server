@@ -21,6 +21,9 @@ public class PostRequestHandler implements IRequestHandler {
 		String rootDirectory = server.getRootDirectory();
 		// Combine them together to form absolute file path
 		File file = new File(rootDirectory + uri);
+		if (file.isDirectory()) {
+			file = new File(rootDirectory + uri + "/" + Protocol.DEFAULT_FILE);
+		}
 
 		HttpResponse response;
 		ResponseCreator rc = new ResponseCreator();
@@ -32,34 +35,21 @@ public class PostRequestHandler implements IRequestHandler {
 				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return rc.setResponseStatus(Protocol.BAD_REQUEST_CODE)
-						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
-						.setResponseFile(null)
-						.getResponse();
+				return rc.setResponseStatus(Protocol.BAD_REQUEST_CODE).setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+						.setResponseFile(null).getResponse();
 			}
 		}
 
-		if (file.isDirectory()) {
-			response = rc.setResponseStatus(Protocol.BAD_REQUEST_CODE)
-					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
-					.setResponseFile(null)
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsolutePath(), true));
+			writer.write(request.getBody());
+			writer.close();
+			response = rc.setResponseStatus(Protocol.OK_CODE).setResponsePhrase(Protocol.OK_TEXT).setResponseFile(file)
 					.getResponse();
-		} else { // Its a file
-			try {
-				BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsolutePath(), true));
-				writer.write(request.getBody());
-				writer.close();
-				response = rc.setResponseStatus(Protocol.OK_CODE)
-						.setResponsePhrase(Protocol.OK_TEXT)
-						.setResponseFile(file)
-						.getResponse();
-			} catch (IOException e) {
-				e.printStackTrace();
-				response = rc.setResponseStatus(Protocol.BAD_REQUEST_CODE)
-						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
-						.setResponseFile(null)
-						.getResponse();
-			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			response = rc.setResponseStatus(Protocol.BAD_REQUEST_CODE).setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
+					.setResponseFile(null).getResponse();
 		}
 
 		return response;
