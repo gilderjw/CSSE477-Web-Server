@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import protocol.Protocol;
 import request_handlers.DeleteRequestHandler;
 import request_handlers.GetRequestHandler;
@@ -19,8 +22,12 @@ import server.Server;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class SimpleWebServer {
+	
+	static final Logger log = LogManager.getLogger(SimpleWebServer.class);
+	
 	public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
 		// TODO: Server configuration, ideally we want to read these from an application.properties file
+		
 		Properties prop = new Properties();
 		prop.load(new FileInputStream("application.properties"));
 		

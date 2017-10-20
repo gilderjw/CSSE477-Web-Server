@@ -11,8 +11,7 @@ apply plugin: 'java-library'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
+apply plugin: 'application'
 apply plugin: 'jacoco'
 
 
@@ -32,9 +31,18 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+    
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.9.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.9.1'
 
 }
 
+
+if (System.getenv("CI_BUILD_TAG") != null) {
+    version = "${System.getenv("CI_BUILD_TAG")}"
+} else {
+    version = '1.0.1-SNAPSHOT'
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -91,4 +99,11 @@ task codeCoverageInfo (dependsOn: jacocoTestReport) {
 	}
 }
 jacocoTestReport.finalizedBy(codeCoverageInfo)
+
+jar {
+	manifest {
+		attributes "Implementation-Title": "RJ and Jim's 477 Web Server",
+				"Implementation-Version": "${version}"
+	}
+}
 

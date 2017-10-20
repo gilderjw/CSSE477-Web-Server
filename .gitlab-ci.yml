@@ -1,6 +1,7 @@
 stages:
   - build
-  - deploy
+  - staging
+  - production
 
 build:
   stage: build
@@ -10,12 +11,32 @@ build:
     - linux
     - java
 
-deploy:
-  stage: deploy
+staging:
+  stage: staging
   script:
-    - ./gradlew publish
+    - ./gradlew distZip
+    - echo $GCP_SERVICE_KEY > /tmp/$GCP_PROJECT_ID.json
+    - gcloud auth activate-service-account --key-file /tmp/$GCP_PROJECT_ID.json
+    - gcloud compute --project $GCP_PROJECT_ID scp --zone $GCP_ZONE build/distributions/* $GCP_USER@staging:~/public_html --quiet
+  after_script:
+    - rm /tmp/$GCP_PROJECT_ID.json
   tags:
-    - linux
+    - gcloud
+    - java
+  only:
+    - tags
+    
+production:
+  stage: production
+  script:
+    - ./gradlew distZip
+    - echo $GCP_SERVICE_KEY > /tmp/$GCP_PROJECT_ID.json
+    - gcloud auth activate-service-account --key-file /tmp/$GCP_PROJECT_ID.json
+    - gcloud compute --project $GCP_PROJECT_ID scp --zone $GCP_ZONE build/distributions/* $GCP_USER@production:~/public_html --quiet
+  after_script:
+    - rm /tmp/$GCP_PROJECT_ID.json
+  tags:
+    - gcloud
     - java
   only:
     - tags

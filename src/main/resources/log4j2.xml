@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Appenders>
+        <Console name="STDERR" target="SYSTEM_ERR">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %msg%n"/>
+        </Console>
+        <File name="ErrorFile" fileName="error.log" append="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+        <File name="UsageFile" fileName="usage.log" append="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            
+            <Filters>
+		        <!-- First deny warn, error and fatal messages -->
+		        <ThresholdFilter level="warn"  onMatch="DENY" onMismatch="NEUTRAL"/>
+		        <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+		        <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+		
+		        <!-- Then accept info, warn, error, fatal and deny debug/trace -->
+		        <ThresholdFilter level="info"  onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %msg%n"/>
+            
+            <Filters>
+		        <!-- First deny warn, error and fatal messages -->
+		        <ThresholdFilter level="warn"  onMatch="DENY" onMismatch="NEUTRAL"/>
+		        <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+		        <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+		
+		        <!-- Then accept info, warn, error, fatal and deny debug/trace -->
+		        <ThresholdFilter level="info"  onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+    		<AppenderRef ref="STDERR" level="error"/>
+    		<AppenderRef ref="ErrorFile" level="error"/>
+            <AppenderRef ref="STDOUT" level="info"/>
+            <AppenderRef ref="UsageFile" level="info"/>
+        </Root>
+    </Loggers>
+</Configuration>
