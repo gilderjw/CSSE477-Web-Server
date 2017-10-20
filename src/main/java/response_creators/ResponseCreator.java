@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 import protocol.HttpResponse;
 import protocol.Protocol;
@@ -42,10 +41,10 @@ public class ResponseCreator {
 		return this;
 	}
 	
-	public ResponseCreator addHeader(String key, String value) {
-		this.response.setHeader(key, value);
-		return this;
-	}
+	// public ResponseCreator addHeader(String key, String value) {
+	// this.response.setHeader(key, value);
+	// return this;
+	// }
 
 	/**
 	 * Convenience method for adding general header to the supplied response object.

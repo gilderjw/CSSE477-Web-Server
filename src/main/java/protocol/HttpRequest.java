@@ -1,9 +1,9 @@
  package protocol;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -55,15 +55,15 @@ public class HttpRequest {
 		return body;
 	}
 
-	/**
-	 * The key to value mapping in the request header fields.
-	 * 
-	 * @return the header
-	 */
-	public Map<String, String> getHeader() {
-		// Lets return the unmodifable view of the header map
-		return Collections.unmodifiableMap(header);
-	}
+	// /**
+	// * The key to value mapping in the request header fields.
+	// *
+	// * @return the header
+	// */
+	// public Map<String, String> getHeader() {
+	// // Lets return the unmodifable view of the header map
+	// return Collections.unmodifiableMap(header);
+	// }
 
 	/**
 	 * Reads raw data from the supplied input stream and constructs a 
@@ -153,27 +153,27 @@ public class HttpRequest {
 	}
 	
 	
-	@Override
-	public String toString() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("----------- Header ----------------\n");
-		buffer.append(this.method);
-		buffer.append(Protocol.SPACE);
-		buffer.append(this.uri);
-		buffer.append(Protocol.SPACE);
-		buffer.append(this.version);
-		buffer.append(Protocol.LF);
-		
-		for(Map.Entry<String, String> entry : this.header.entrySet()) {
-			buffer.append(entry.getKey());
-			buffer.append(Protocol.SEPERATOR);
-			buffer.append(Protocol.SPACE);
-			buffer.append(entry.getValue());
-			buffer.append(Protocol.LF);
-		}
-		buffer.append("------------- Body ---------------\n");
-		buffer.append(this.body);
-		buffer.append("----------------------------------\n");
-		return buffer.toString();
-	}
+	// @Override
+	// public String toString() {
+	// StringBuffer buffer = new StringBuffer();
+	// buffer.append("----------- Header ----------------\n");
+	// buffer.append(this.method);
+	// buffer.append(Protocol.SPACE);
+	// buffer.append(this.uri);
+	// buffer.append(Protocol.SPACE);
+	// buffer.append(this.version);
+	// buffer.append(Protocol.LF);
+	//
+	// for(Map.Entry<String, String> entry : this.header.entrySet()) {
+	// buffer.append(entry.getKey());
+	// buffer.append(Protocol.SEPERATOR);
+	// buffer.append(Protocol.SPACE);
+	// buffer.append(entry.getValue());
+	// buffer.append(Protocol.LF);
+	// }
+	// buffer.append("------------- Body ---------------\n");
+	// buffer.append(this.body);
+	// buffer.append("----------------------------------\n");
+	// return buffer.toString();
+	// }
 }

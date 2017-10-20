@@ -26,7 +26,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -64,27 +63,28 @@ public class HttpResponse {
 		this.file = file;
 	}
 
-	/**
-	 * Constructs a HttpResponse object using supplied parameter
-	 * 
-	 * @param version
-	 *            The http version.
-	 * @param status
-	 *            The response status.
-	 * @param phrase
-	 *            The response status phrase.
-	 * @param header
-	 *            The header field map.
-	 * @param file
-	 *            The file to be sent.
-	 */
-	public HttpResponse(String version, int status, String phrase, Map<String, String> header, File file) {
-		this.version = version;
-		this.status = status;
-		this.phrase = phrase;
-		this.header = header;
-		this.file = file;
-	}
+	// /**
+	// * Constructs a HttpResponse object using supplied parameter
+	// *
+	// * @param version
+	// * The http version.
+	// * @param status
+	// * The response status.
+	// * @param phrase
+	// * The response status phrase.
+	// * @param header
+	// * The header field map.
+	// * @param file
+	// * The file to be sent.
+	// */
+	// public HttpResponse(String version, int status, String phrase, Map<String,
+	// String> header, File file) {
+	// this.version = version;
+	// this.status = status;
+	// this.phrase = phrase;
+	// this.header = header;
+	// this.file = file;
+	// }
 
 	/**
 	 * Gets the version of the HTTP.
@@ -121,16 +121,16 @@ public class HttpResponse {
 	public File getFile() {
 		return file;
 	}
-
-	/**
-	 * Returns the header fields associated with the response object.
-	 * 
-	 * @return the header
-	 */
-	public Map<String, String> getHeader() {
-		// Lets return the unmodifable view of the header map
-		return Collections.unmodifiableMap(header);
-	}
+	//
+	// /**
+	// * Returns the header fields associated with the response object.
+	// *
+	// * @return the header
+	// */
+	// public Map<String, String> getHeader() {
+	// // Lets return the unmodifable view of the header map
+	// return Collections.unmodifiableMap(header);
+	// }
 
 	/**
 	 * Maps a key to value in the header map.
@@ -221,9 +221,9 @@ public class HttpResponse {
 		buffer.append("\n----------------------------------\n");
 		return buffer.toString();
 	}
-
-	public void setHeader(String key, String value) {
-		this.header.put(key, value);		
-	}
+	//
+	// public void setHeader(String key, String value) {
+	// this.header.put(key, value);
+	// }
 
 }
