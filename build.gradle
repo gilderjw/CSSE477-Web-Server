@@ -38,6 +38,8 @@ dependencies {
 }
 
 
+mainClassName='app.SimpleWebServer'
+
 if (System.getenv("CI_BUILD_TAG") != null) {
     version = "${System.getenv("CI_BUILD_TAG")}"
 } else {
