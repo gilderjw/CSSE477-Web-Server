@@ -4,10 +4,10 @@
         <Console name="STDERR" target="SYSTEM_ERR">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %msg%n"/>
         </Console>
-        <File name="ErrorFile" fileName="error.log" append="true">
+        <File name="ErrorFile" fileName="errorLogger.log" append="true">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
-        <File name="UsageFile" fileName="usage.log" append="true">
+        <File name="UsageFile" fileName="usageLogger.log" append="true">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
             
             <Filters>

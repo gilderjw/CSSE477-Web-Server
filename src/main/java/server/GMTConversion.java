@@ -8,8 +8,13 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class GMTConversion {
 	public static final String GMT_FORMAT = "EEE, d MMM yyyy HH:mm:ss z";
+	
+	static final Logger log = LogManager.getLogger(GMTConversion.class);
 	
 	public static String toGMTString(Date date) {
 		Calendar calendar = new GregorianCalendar();
@@ -21,20 +26,25 @@ public class GMTConversion {
 		return gmtFormat.format(date);
 	}
 	
-	public static Date fromGMTString(String dateString) throws ParseException {
+	public static Date fromGMTString(String dateString) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 
 		DateFormat gmtFormat = new SimpleDateFormat(GMT_FORMAT);
 		gmtFormat.setCalendar(calendar);
 	
-		return gmtFormat.parse(dateString);
+		try {
+			return gmtFormat.parse(dateString);
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+		}
+		return null;
 	}
 	
 	public static void main(String[] args) throws Exception {
 		Date date = new Date();
-		System.out.println("From Any Timezone Date:\t" + date);
+		log.info("From Any Timezone Date:\t" + date);
 		String newTime = toGMTString(date);
-		System.out.println("To GMT Timezone Date:\t" + newTime);
+		log.info("To GMT Timezone Date:\t" + newTime);
 	}
 }

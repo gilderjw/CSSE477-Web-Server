@@ -25,8 +25,13 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Represents a response object for HTTP.
@@ -34,6 +39,8 @@ import java.util.Map;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class HttpResponse {
+	static final Logger log = LogManager.getLogger(HttpResponse.class);
+	
 	private String version;
 	private int status;
 	private String phrase;
@@ -151,12 +158,16 @@ public class HttpResponse {
 	 *            The output stream
 	 * @throws Exception
 	 */
-	public void write(OutputStream outStream) throws Exception {
+	public void write(OutputStream outStream) {
 		BufferedOutputStream out = new BufferedOutputStream(outStream, Protocol.CHUNK_LENGTH);
 
 		// First status line
 		String line = this.version + Protocol.SPACE + this.status + Protocol.SPACE + this.phrase + Protocol.CRLF;
-		out.write(line.getBytes());
+		try {
+			out.write(line.getBytes());
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
 
 		// Write header fields if there is something to write in header field
 		if (header != null && !header.isEmpty()) {
@@ -166,32 +177,57 @@ public class HttpResponse {
 
 				// Write each header field line
 				line = key + Protocol.SEPERATOR + Protocol.SPACE + value + Protocol.CRLF;
-				out.write(line.getBytes());
+				try {
+					out.write(line.getBytes());
+				} catch (IOException e) {
+					log.error(e.getMessage());
+				}
 			}
 		}
 
 		// Write a blank line
-		out.write(Protocol.CRLF.getBytes());
+		try {
+			out.write(Protocol.CRLF.getBytes());
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
 
 		// We are reading a file
 		if (this.getStatus() == Protocol.OK_CODE && file != null) {
 			// Process text documents
-			FileInputStream fileInStream = new FileInputStream(file);
+			FileInputStream fileInStream = null;
+			try {
+				fileInStream = new FileInputStream(file);
+			} catch (FileNotFoundException e) {
+				log.error(e.getMessage());
+			}
 			BufferedInputStream inStream = new BufferedInputStream(fileInStream, Protocol.CHUNK_LENGTH);
 
 			byte[] buffer = new byte[Protocol.CHUNK_LENGTH];
 			int bytesRead = 0;
 			// While there is some bytes to read from file, read each chunk and send to the
 			// socket out stream
-			while ((bytesRead = inStream.read(buffer)) != -1) {
-				out.write(buffer, 0, bytesRead);
+			try {
+				while ((bytesRead = inStream.read(buffer)) != -1) {
+					out.write(buffer, 0, bytesRead);
+				}
+			} catch (IOException e) {
+				log.error(e.getMessage());
 			}
 			// Close the file input stream, we are done reading
-			inStream.close();
+			try {
+				inStream.close();
+			} catch (IOException e) {
+				log.error(e.getMessage());
+			}
 		}
 
 		// Flush the data so that outStream sends everything through the socket
-		out.flush();
+		try {
+			out.flush();
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
 	}
 
 	@Override

@@ -26,6 +26,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import request_handlers.IRequestHandler;
 
 /**
@@ -35,6 +38,8 @@ import request_handlers.IRequestHandler;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class Server implements Runnable {
+	static final Logger log = LogManager.getLogger(Server.class);
+	
 	private String rootDirectory;
 	private int port;
 	private boolean stop;
@@ -97,7 +102,7 @@ public class Server implements Runnable {
 			}
 			this.welcomeSocket.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 
@@ -122,6 +127,7 @@ public class Server implements Runnable {
 			// We do not have any other job for this socket so just close it
 			socket.close();
 		} catch (Exception e) {
+			log.error(e.getMessage());
 		}
 	}
 
