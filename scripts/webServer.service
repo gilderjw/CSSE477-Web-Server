@@ -1,0 +1,8 @@
+[Unit]
+Description=webServer
+
+[Service]
+ExecStart=/bin/bash /home/distribution/public_html/startserver.sh
+WorkingDirectory=/home/distribution/public_html
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
