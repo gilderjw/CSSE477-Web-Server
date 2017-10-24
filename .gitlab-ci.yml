@@ -8,8 +8,7 @@ build:
   script:
     - ./gradlew build
   tags:
-    - linux
-    - java
+    - RJandJim
 
 staging:
   stage: staging
@@ -21,8 +20,7 @@ staging:
   after_script:
     - rm /tmp/$GCP_PROJECT_ID.json
   tags:
-    - gcloud
-    - java
+    - RJandJim
   only:
     - master
     
@@ -36,7 +34,6 @@ production:
   after_script:
     - rm /tmp/$GCP_PROJECT_ID.json
   tags:
-    - gcloud
-    - java
+    - RJandJim
   only:
     - tags

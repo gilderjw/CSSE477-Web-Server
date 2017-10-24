@@ -102,7 +102,7 @@ public class Server implements Runnable {
 			}
 			this.welcomeSocket.close();
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(e);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class Server implements Runnable {
 			// We do not have any other job for this socket so just close it
 			socket.close();
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(e);
 		}
 	}
 
