@@ -8,9 +8,7 @@ build:
   script:
     - ./gradlew build
   tags:
-    - linux
-    - java
-	- RJandJim
+    - RJandJim
 
 staging:
   stage: staging
