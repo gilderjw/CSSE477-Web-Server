@@ -71,6 +71,11 @@ applicationDistribution.from("${projectDir}/web") {
 	into "web"
 }
 
+applicationDistribution.from("${projectDir}/scripts") {
+	into "scripts"
+}
+
+
 applicationDistribution.from("${projectDir}/application.properties") {
 	into "."
 }
