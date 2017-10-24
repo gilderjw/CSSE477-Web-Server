@@ -36,7 +36,7 @@ public class GMTConversion {
 		try {
 			return gmtFormat.parse(dateString);
 		} catch (ParseException e) {
-			log.error(e);
+			log.error("Couldn't parse date", e);
 		}
 		return null;
 	}

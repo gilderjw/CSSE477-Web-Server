@@ -166,7 +166,7 @@ public class HttpResponse {
 		try {
 			out.write(line.getBytes());
 		} catch (IOException e) {
-			log.error(e);
+			log.error("Could not write to output in response", e);
 		}
 
 		// Write header fields if there is something to write in header field
@@ -180,7 +180,7 @@ public class HttpResponse {
 				try {
 					out.write(line.getBytes());
 				} catch (IOException e) {
-					log.error(e);
+					log.error("Could not write to output in response", e);
 				}
 			}
 		}
@@ -189,7 +189,7 @@ public class HttpResponse {
 		try {
 			out.write(Protocol.CRLF.getBytes());
 		} catch (IOException e) {
-			log.error(e);
+			log.error("Could not write to output in response", e);
 		}
 
 		// We are reading a file
@@ -199,7 +199,7 @@ public class HttpResponse {
 			try {
 				fileInStream = new FileInputStream(file);
 			} catch (FileNotFoundException e) {
-				log.error(e);
+				log.error("Could not read file in HTTPResponse", e);
 			}
 			BufferedInputStream inStream = new BufferedInputStream(fileInStream, Protocol.CHUNK_LENGTH);
 
@@ -212,13 +212,13 @@ public class HttpResponse {
 					out.write(buffer, 0, bytesRead);
 				}
 			} catch (IOException e) {
-				log.error(e);
+				log.error("Could not write to output in response", e);
 			}
 			// Close the file input stream, we are done reading
 			try {
 				inStream.close();
 			} catch (IOException e) {
-				log.error(e);
+				log.error("Could not close stream", e);
 			}
 		}
 
@@ -226,7 +226,7 @@ public class HttpResponse {
 		try {
 			out.flush();
 		} catch (IOException e) {
-			log.error(e);
+			log.error("Could not flush stream", e);
 		}
 	}
 

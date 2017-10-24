@@ -90,8 +90,6 @@ public class HttpRequest {
 		String line = reader.readLine(); // A line ends with either a \r, or a \n, or both
 		
 		if(line == null) {
-			log.error("ERROR: Line is null in HttpRequest read method");
-			log.error(Protocol.BAD_REQUEST_TEXT);
 			throw new ProtocolException(Protocol.BAD_REQUEST_CODE, Protocol.BAD_REQUEST_TEXT);
 		}
 		
@@ -100,7 +98,7 @@ public class HttpRequest {
 		
 		// Error checking the first line must have exactly three elements
 		if(tokenizer.countTokens() != 3) {
-			log.error("ERROR: first line doesn't have exactly three elements in HttpRequest read method");
+			log.error("First line doesn't have exactly three elements in HttpRequest read method.");
 			log.error(Protocol.BAD_REQUEST_TEXT);
 			throw new ProtocolException(Protocol.BAD_REQUEST_CODE, Protocol.BAD_REQUEST_TEXT);
 		}
@@ -149,10 +147,14 @@ public class HttpRequest {
 		
 		int contentLength = 0;
 		try {
-			contentLength = Integer.parseInt(request.header.get(Protocol.CONTENT_LENGTH.toLowerCase()));
+			if (request.header.get(Protocol.CONTENT_LENGTH.toLowerCase()) == null) {
+				contentLength = 0;
+			} else {
+				contentLength = Integer.parseInt(request.header.get(Protocol.CONTENT_LENGTH.toLowerCase()));
+			}
 		}
 		catch(Exception e){
-			log.error(e);
+			log.error("Could not parse int for content length in HTTPRequest.", e);
 		}
 		
 		if(contentLength > 0) {

@@ -30,7 +30,7 @@ public class SimpleWebServer {
 		try {
 			prop.load(new FileInputStream("application.properties"));
 		} catch (IOException e) {
-			log.error(e);
+			log.error("Problem loading properties file.", e);
 		}
 
 		String rootDirectory = prop.getProperty("root_directory");
@@ -52,7 +52,7 @@ public class SimpleWebServer {
 		try {
 			runner.join();
 		} catch (InterruptedException e) {
-			log.error(e);
+			log.error("Problem with runner.join() in SimpleWebServer.", e);
 		}
 	}
 }

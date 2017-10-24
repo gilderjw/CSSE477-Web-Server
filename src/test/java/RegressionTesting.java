@@ -50,9 +50,9 @@ public class RegressionTesting {
 				wr.writeBytes(body);
 				wr.close();
 
-			} else {
-				connection.connect();
 			}
+
+			connection.connect();
 
 			return connection;
 
@@ -69,8 +69,6 @@ public class RegressionTesting {
 
 	@BeforeClass
 	public static void setUp() throws InterruptedException {
-		// TODO: Server configuration, ideally we want to read these from an
-		// application.properties file
 		String rootDirectory = "./webtest";
 
 		// Create a run the server
@@ -84,25 +82,16 @@ public class RegressionTesting {
 		runner.start();
 
 		while (server.isStoped()) {
-			System.out.println("Waiting for server to start");
 			Thread.sleep(100);
-
 		}
-
-		// TODO: Instead of just printing to the console, use proper logging mechanism.
-		// SL4J/Log4J are some popular logging framework
-		System.out.format("Simple Web Server started at port %d and serving the %s directory ...%n", PORT,
-				rootDirectory);
 
 	}
 
 	@AfterClass
 	public static void tearDown() throws IOException, InterruptedException {
 		server.stop();
-		System.out.println("tearing down");
 		while (!server.isStoped()) {
 			Thread.sleep(1000);
-			System.out.println("Server stoppping");
 		}
 
 		File postTxt = new File("./webtest/post.txt");
