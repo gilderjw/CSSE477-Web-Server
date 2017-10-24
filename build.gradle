@@ -67,6 +67,15 @@ jacocoTestReport {
 	}
 }
 
+applicationDistribution.from("${projectDir}/web") {
+	into "web"
+}
+
+applicationDistribution.from("${projectDir}/application.properties") {
+	into "."
+}
+
+
 
 test {
     testLogging.showStandardStreams = true
