@@ -68,7 +68,7 @@ public class ConnectionHandler implements Runnable {
 		} catch (Exception e) {
 			// Cannot do anything if we have exception reading input or output stream
 			// May be have text to log this for further analysis?
-			log.error(e.getMessage());
+			log.error(e);
 			return;
 		}
 
@@ -98,7 +98,7 @@ public class ConnectionHandler implements Runnable {
 			}
 			
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(e);
 			// For any other error, we will create bad request response as well
 			response = rc
 					.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
@@ -112,7 +112,7 @@ public class ConnectionHandler implements Runnable {
 				response.write(outStream);
 			} catch (Exception e) {
 				// We will ignore this exception
-				log.error(e.getMessage());
+				log.error(e);
 			}
 
 			return;
@@ -135,7 +135,7 @@ public class ConnectionHandler implements Runnable {
 				response = this.handlers.get(request.getMethod()).handleRequest(request, this.server);
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(e);
 		}
 
 		// TODO: So far response could be null for protocol version mismatch.
@@ -154,7 +154,7 @@ public class ConnectionHandler implements Runnable {
 			this.socket.close();
 		} catch (Exception e) {
 			// We will ignore this exception
-			log.error(e.getMessage());
+			log.error(e);
 		}
 	}
 }

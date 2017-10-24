@@ -152,7 +152,7 @@ public class HttpRequest {
 			contentLength = Integer.parseInt(request.header.get(Protocol.CONTENT_LENGTH.toLowerCase()));
 		}
 		catch(Exception e){
-			log.error(e.getMessage());
+			log.error(e);
 		}
 		
 		if(contentLength > 0) {

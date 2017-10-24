@@ -21,22 +21,20 @@ import server.Server;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class SimpleWebServer {
-	
+
 	static final Logger log = LogManager.getLogger(SimpleWebServer.class);
-	
+
 	public static void main(String[] args) {
-		// TODO: Server configuration, ideally we want to read these from an application.properties file
-		
+
 		Properties prop = new Properties();
 		try {
 			prop.load(new FileInputStream("application.properties"));
 		} catch (IOException e) {
-			log.error(e.getMessage());
+			log.error(e);
 		}
-		
-		String rootDirectory = prop.getProperty("root_directory"); 
+
+		String rootDirectory = prop.getProperty("root_directory");
 		int port = Integer.parseInt((String) prop.get("port_number"));
-		
 
 		// Create a run the server
 		Server server = new Server(rootDirectory, port);
@@ -47,14 +45,14 @@ public class SimpleWebServer {
 		server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
 		Thread runner = new Thread(server);
 		runner.start();
-		
-		log.info("Simple Web Server started at port %d and serving the %s directory ...%n", port, rootDirectory);
-		
+
+		log.info("Simple Web Server started at port " + port + " and serving the " + rootDirectory + " directory ...");
+
 		// Wait for the server thread to terminate
 		try {
 			runner.join();
 		} catch (InterruptedException e) {
-			log.error(e.getMessage());
+			log.error(e);
 		}
 	}
 }
