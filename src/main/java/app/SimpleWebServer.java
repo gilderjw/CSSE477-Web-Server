@@ -17,7 +17,7 @@ import server.Server;
 
 /**
  * The entry point of the Simple Web Server (SWS).
- * 
+ *
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class SimpleWebServer {
@@ -27,6 +27,7 @@ public class SimpleWebServer {
 	public static void main(String[] args) {
 
 		Properties prop = new Properties();
+		System.err.println(System.getProperty("user.dir"));
 		try {
 			prop.load(new FileInputStream("application.properties"));
 		} catch (IOException e) {
