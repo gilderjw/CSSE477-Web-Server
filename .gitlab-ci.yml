@@ -17,6 +17,7 @@ staging:
     - echo $GCP_SERVICE_KEY > /tmp/$GCP_PROJECT_ID.json
     - gcloud auth activate-service-account --key-file /tmp/$GCP_PROJECT_ID.json
     - gcloud compute --project $GCP_PROJECT_ID scp --zone $GCP_ZONE build/distributions/* $GCP_USER@staging:~/public_html --quiet
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "setup.sh"
   after_script:
     - rm /tmp/$GCP_PROJECT_ID.json
   tags:
@@ -31,6 +32,7 @@ production:
     - echo $GCP_SERVICE_KEY > /tmp/$GCP_PROJECT_ID.json
     - gcloud auth activate-service-account --key-file /tmp/$GCP_PROJECT_ID.json
     - gcloud compute --project $GCP_PROJECT_ID scp --zone $GCP_ZONE build/distributions/* $GCP_USER@production:~/public_html --quiet
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "setup.sh"
   after_script:
     - rm /tmp/$GCP_PROJECT_ID.json
   tags:
