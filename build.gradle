@@ -79,6 +79,7 @@ applicationDistribution.from("${projectDir}/application.properties") {
 
 test {
     testLogging.showStandardStreams = true
+    environment "CI_VERSION", version
 	jacoco {
 		append = false
 	}
