@@ -25,13 +25,14 @@ public class PluginListener implements Runnable {
 	private WatchService watcher;
 	private Path dir;
 	private final String LOCATION_TO_WATCH = "plugins";
-	// TODO: Map needs to go here to keep track of plugins.
 	private Map<String, URL> pluginMap;
+	private PluginRunner runner;
 	
 	static final Logger log = LogManager.getLogger(PluginListener.class);
 	
-	public PluginListener(Map<String, URL> pluginMap) {
+	public PluginListener(Map<String, URL> pluginMap, PluginRunner runner) {
 		this.pluginMap = pluginMap;
+		this.runner = runner;
 		try {
 			watcher = FileSystems.getDefault().newWatchService();
 			dir = Paths.get(LOCATION_TO_WATCH);
@@ -76,13 +77,20 @@ public class PluginListener implements Runnable {
 					log.error("Watchevent poll threw exception", e);
 				}
 				
+				URL currentURL = null;
+				int currentSize = pluginMap.size();
 				try {
-					pluginMap.put(filename.toString(), Paths.get(filename.toString()).toUri().toURL());
+					currentURL = Paths.get(filename.toString()).toUri().toURL();
+					pluginMap.put(filename.toString(), currentURL);
 				} catch (MalformedURLException e) {
 					log.error("Could not place plugin url in map in listener", e);
 				}
 				
-				// TODO: Activate the plugin that was added.
+				// Means that the plugin was not already inside the map, and needs to be started.
+				if (currentSize != pluginMap.size()) {
+					runner.runPlugin(currentURL);
+				}
+				
 						
 			}
 			
