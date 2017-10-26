@@ -1,18 +1,16 @@
 package app;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import protocol.Protocol;
-import request_handlers.DeleteRequestHandler;
-import request_handlers.GetRequestHandler;
-import request_handlers.HeadRequestHandler;
-import request_handlers.PostRequestHandler;
-import request_handlers.PutRequestHandler;
+import dynamic_loading.PluginLoader;
+import plugins.IPlugin;
 import server.Server;
 
 /**
@@ -23,6 +21,7 @@ import server.Server;
 public class SimpleWebServer {
 
 	static final Logger log = LogManager.getLogger(SimpleWebServer.class);
+	public static final String DEFAULT_PLUGIN = "DEFAULT_PLUGIN";
 
 	public static void main(String[] args) {
 
@@ -37,13 +36,32 @@ public class SimpleWebServer {
 		String rootDirectory = prop.getProperty("root_directory");
 		int port = Integer.parseInt((String) prop.get("port_number"));
 
+		// Loading plugins with map
+		PluginLoader pluginLoader = null;
+		try {
+			pluginLoader = new PluginLoader();
+		} catch (FileNotFoundException e) {
+			log.error("Could not create pluginLoader", e);
+		}
+
+		// Loads all currently available plugins to map to be run.
+		Set<IPlugin> plugins = pluginLoader.loadAvailablePlugins();
+
+		// PluginListener pluginListener = new PluginListener(plugins, pluginRunner);
+		// Thread pluginThread = new Thread(pluginListener);
+		// pluginThread.start();
+
 		// Create a run the server
 		Server server = new Server(rootDirectory, port);
-		server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
-		server.registerRequestHandler(Protocol.GET, new GetRequestHandler());
-		server.registerRequestHandler(Protocol.HEAD, new HeadRequestHandler());
-		server.registerRequestHandler(Protocol.DELETE, new DeleteRequestHandler());
-		server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
+
+		// TODO: only one thing loaded
+		server.registerPlugin("DEFAULT_PLUGIN", plugins.toArray(new IPlugin[1])[0]);
+
+		// server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
+		// server.registerRequestHandler(Protocol.GET, new GetRequestHandler());
+		// server.registerRequestHandler(Protocol.HEAD, new HeadRequestHandler());
+		// server.registerRequestHandler(Protocol.DELETE, new DeleteRequestHandler());
+		// server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
 		Thread runner = new Thread(server);
 		runner.start();
 
