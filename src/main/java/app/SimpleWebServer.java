@@ -3,22 +3,14 @@ package app;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dynamic_loading.PluginListener;
-import dynamic_loading.PluginLoader;
-import dynamic_loading.PluginRunner;
-import protocol.Protocol;
-import request_handlers.DeleteRequestHandler;
-import request_handlers.GetRequestHandler;
 import dynamic_loading.PluginLoader;
 import plugins.IPlugin;
-import request_handlers.PutRequestHandler;
 import server.Server;
 
 /**
@@ -43,26 +35,6 @@ public class SimpleWebServer {
 
 		String rootDirectory = prop.getProperty("root_directory");
 		int port = Integer.parseInt((String) prop.get("port_number"));
-		
-		
-		// Loading plugins with map
-		Set<String> plugins = new HashSet<>();
-		PluginLoader pluginLoader = null;
-		try {
-			pluginLoader = new PluginLoader(plugins);
-		} catch (FileNotFoundException e) {
-			log.error("Could not create pluginLoader", e);
-		}
-		
-		// Loads all currently available plugins to map to be run.
-		pluginLoader.loadAvailablePlugins();
-		
-		PluginRunner pluginRunner = new PluginRunner(plugins);
-		
-		PluginListener pluginListener = new PluginListener(plugins, pluginRunner);
-		Thread pluginThread = new Thread(pluginListener);
-		pluginThread.start();
-		
 
 		// Loading plugins with map
 		PluginLoader pluginLoader = null;
