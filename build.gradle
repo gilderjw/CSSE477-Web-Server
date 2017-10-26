@@ -13,14 +13,17 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'application'
 apply plugin: 'jacoco'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+    maven {
+        url "https://maven.csse.rose-hulman.edu/artifactory/libs-release"
+    }
 }
+
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
@@ -124,3 +127,37 @@ jar {
 	}
 }
 
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			repository(url: "file://${buildDir}/repo")
+		}
+	}
+}
+
+task packageSources(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+			artifact packageSources
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                username System.getenv('MAVEN_USER')
+                password System.getenv('MAVEN_PASSWORD')
+            }
+            url "https://maven.csse.rose-hulman.edu/artifactory/student-release-local"
+        }
+    }
+}
