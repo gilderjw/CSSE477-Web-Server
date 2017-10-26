@@ -9,11 +9,12 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import app.SimpleWebServer;
+import plugins.IPlugin;
 import protocol.HttpRequest;
 import protocol.HttpResponse;
 import protocol.Protocol;
 import protocol.ProtocolException;
-import request_handlers.IRequestHandler;
 import response_creators.ResponseCreator;
 
 /**
@@ -26,15 +27,16 @@ import response_creators.ResponseCreator;
  */
 public class ConnectionHandler implements Runnable {
 	static final Logger log = LogManager.getLogger(ConnectionHandler.class);
-	
+
 	private Server server;
 	private Socket socket;
-	private HashMap<String, IRequestHandler> handlers;
+	// private HashMap<String, IRequestHandler> handlers;
+	private HashMap<String, IPlugin> plugins;
 
 	public ConnectionHandler(Server server, Socket socket) {
 		this.server = server;
 		this.socket = socket;
-		this.handlers = new HashMap<>();
+		this.plugins = new HashMap<>();
 	}
 
 	/**
@@ -44,8 +46,8 @@ public class ConnectionHandler implements Runnable {
 		return this.socket;
 	}
 
-	public void setHandlers(Map<String, IRequestHandler> handlers) {
-		this.handlers = (HashMap<String, IRequestHandler>) handlers;
+	public void setPlugins(Map<String, IPlugin> handlers) {
+		this.plugins = (HashMap<String, IPlugin>) handlers;
 	}
 
 	/**
@@ -77,8 +79,7 @@ public class ConnectionHandler implements Runnable {
 		HttpRequest request = null;
 		HttpResponse response = null;
 		ResponseCreator rc = new ResponseCreator();
-		rc.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE)
-			.setResponseVersion(Protocol.VERSION);
+		rc.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE).setResponseVersion(Protocol.VERSION);
 		try {
 			request = HttpRequest.read(inStream);
 		} catch (ProtocolException pe) {
@@ -89,21 +90,17 @@ public class ConnectionHandler implements Runnable {
 			int status = pe.getStatus();
 			if (status == Protocol.BAD_REQUEST_CODE) {
 				response = rc.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
-					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
-					.getResponse();
-			} else if (status == Protocol.NOT_FOUND_CODE){
+						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT).getResponse();
+			} else if (status == Protocol.NOT_FOUND_CODE) {
 				response = rc.setResponseFile(null).setResponseStatus(Protocol.NOT_FOUND_CODE)
-						.setResponsePhrase(Protocol.NOT_FOUND_TEXT)
-						.getResponse();
+						.setResponsePhrase(Protocol.NOT_FOUND_TEXT).getResponse();
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Couldn't read stream in connection handler.", e);
 			// For any other error, we will create bad request response as well
-			response = rc
-					.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
-					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
-					.getResponse();
+			response = rc.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
+					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT).getResponse();
 		}
 
 		if (response != null) {
@@ -129,10 +126,19 @@ public class ConnectionHandler implements Runnable {
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
 				response = rc.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
-						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
-						.getResponse();
+						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT).getResponse();
 			} else {
-				response = this.handlers.get(request.getMethod()).handleRequest(request, this.server);
+				if (this.plugins.containsKey(request.getUri())) {
+					response = this.plugins.get(request.getUri()).getHandler(request.getMethod()).handleRequest(request,
+							this.server);
+				} else {
+					// we do not have a plugin for this, just load default
+					response = this.plugins.get(SimpleWebServer.DEFAULT_PLUGIN).getHandler(request.getMethod())
+							.handleRequest(request, this.server);
+				}
+
+				// response = this.handlers.get(request.getMethod()).handleRequest(request,
+				// this.server);
 			}
 		} catch (Exception e) {
 			log.error("Response couldn't be created or couldn't be handled.", e);
@@ -143,8 +149,7 @@ public class ConnectionHandler implements Runnable {
 		// after a response object is created for protocol version mismatch.
 		if (response == null) {
 			response = rc.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
-					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT)
-					.getResponse();
+					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT).getResponse();
 		}
 
 		try {

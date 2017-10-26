@@ -16,8 +16,8 @@ import dynamic_loading.PluginRunner;
 import protocol.Protocol;
 import request_handlers.DeleteRequestHandler;
 import request_handlers.GetRequestHandler;
-import request_handlers.HeadRequestHandler;
-import request_handlers.PostRequestHandler;
+import dynamic_loading.PluginLoader;
+import plugins.IPlugin;
 import request_handlers.PutRequestHandler;
 import server.Server;
 
@@ -29,6 +29,7 @@ import server.Server;
 public class SimpleWebServer {
 
 	static final Logger log = LogManager.getLogger(SimpleWebServer.class);
+	public static final String DEFAULT_PLUGIN = "DEFAULT_PLUGIN";
 
 	public static void main(String[] args) {
 
@@ -63,13 +64,32 @@ public class SimpleWebServer {
 		pluginThread.start();
 		
 
+		// Loading plugins with map
+		PluginLoader pluginLoader = null;
+		try {
+			pluginLoader = new PluginLoader();
+		} catch (FileNotFoundException e) {
+			log.error("Could not create pluginLoader", e);
+		}
+
+		// Loads all currently available plugins to map to be run.
+		Set<IPlugin> plugins = pluginLoader.loadAvailablePlugins();
+
+		// PluginListener pluginListener = new PluginListener(plugins, pluginRunner);
+		// Thread pluginThread = new Thread(pluginListener);
+		// pluginThread.start();
+
 		// Create a run the server
 		Server server = new Server(rootDirectory, port);
-		server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
-		server.registerRequestHandler(Protocol.GET, new GetRequestHandler());
-		server.registerRequestHandler(Protocol.HEAD, new HeadRequestHandler());
-		server.registerRequestHandler(Protocol.DELETE, new DeleteRequestHandler());
-		server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
+
+		// TODO: only one thing loaded
+		server.registerPlugin("DEFAULT_PLUGIN", plugins.toArray(new IPlugin[1])[0]);
+
+		// server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
+		// server.registerRequestHandler(Protocol.GET, new GetRequestHandler());
+		// server.registerRequestHandler(Protocol.HEAD, new HeadRequestHandler());
+		// server.registerRequestHandler(Protocol.DELETE, new DeleteRequestHandler());
+		// server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
 		Thread runner = new Thread(server);
 		runner.start();
 

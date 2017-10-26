@@ -29,7 +29,7 @@ import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import request_handlers.IRequestHandler;
+import plugins.IPlugin;
 
 /**
  * This represents a welcoming server for the incoming TCP request from a HTTP
@@ -39,12 +39,13 @@ import request_handlers.IRequestHandler;
  */
 public class Server implements Runnable {
 	static final Logger log = LogManager.getLogger(Server.class);
-	
+
 	private String rootDirectory;
 	private int port;
 	private boolean stop;
 	private ServerSocket welcomeSocket;
-	private HashMap<String, IRequestHandler> handlers;
+	// private HashMap<String, IRequestHandler> handlers;
+	private HashMap<String, IPlugin> plugins;
 
 	/**
 	 * @param rootDirectory
@@ -54,7 +55,7 @@ public class Server implements Runnable {
 		this.rootDirectory = rootDirectory;
 		this.port = port;
 		this.stop = true;
-		this.handlers = new HashMap<>();
+		this.plugins = new HashMap<>();
 	}
 
 	/**
@@ -97,7 +98,7 @@ public class Server implements Runnable {
 				// Create a handler for this incoming connection and start the handler in a new
 				// thread
 				ConnectionHandler handler = new ConnectionHandler(this, connectionSocket);
-				handler.setHandlers(this.handlers);
+				handler.setPlugins(this.plugins);
 				new Thread(handler).start();
 			}
 			this.welcomeSocket.close();
@@ -106,8 +107,8 @@ public class Server implements Runnable {
 		}
 	}
 
-	public void registerRequestHandler(String protocol, IRequestHandler handler) {
-		this.handlers.put(protocol, handler);
+	public void registerPlugin(String uri, IPlugin plugin) {
+		this.plugins.put(uri, plugin);
 	}
 
 	/**
