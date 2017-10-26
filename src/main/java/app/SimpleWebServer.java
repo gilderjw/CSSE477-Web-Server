@@ -3,10 +3,9 @@ package app;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,7 +45,7 @@ public class SimpleWebServer {
 		
 		
 		// Loading plugins with map
-		Map<String, URL> plugins = new HashMap<>();
+		Set<String> plugins = new HashSet<>();
 		PluginLoader pluginLoader = null;
 		try {
 			pluginLoader = new PluginLoader(plugins);

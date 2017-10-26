@@ -2,11 +2,9 @@ package dynamic_loading;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -14,15 +12,15 @@ import org.apache.logging.log4j.Logger;
 
 public class PluginLoader {
 
-	private Map<String, URL> pluginMap;
+	private Set<String> pluginSet;
 	private Path dir;
 	private final String PLUGIN_LOCATION = "plugins";
 	private File folder;
 	
 	static final Logger log = LogManager.getLogger(PluginLoader.class);
 
-	public PluginLoader(Map<String, URL> pluginMap) throws FileNotFoundException {
-		this.pluginMap = pluginMap;
+	public PluginLoader(Set<String> pluginSet) throws FileNotFoundException {
+		this.pluginSet = pluginSet;
 		dir = Paths.get(PLUGIN_LOCATION);
 		folder = dir.toFile();
 		if (!folder.exists()) {
@@ -41,11 +39,7 @@ public class PluginLoader {
 			
 			// File is a jar or war type
 			
-			try {
-				pluginMap.put(current.getPath(), current.toURI().toURL());
-			} catch (MalformedURLException e) {
-				log.error("Plugin could not be put into map in pluginLoader", e);
-			}
+			pluginSet.add(current.getPath());
 		}
 	}
 

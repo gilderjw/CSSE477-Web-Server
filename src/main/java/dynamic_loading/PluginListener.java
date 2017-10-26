@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,13 +25,13 @@ public class PluginListener implements Runnable {
 	private WatchService watcher;
 	private Path dir;
 	private final String LOCATION_TO_WATCH = "plugins";
-	private Map<String, URL> pluginMap;
+	private Set<String> pluginSet;
 	private PluginRunner runner;
 	
 	static final Logger log = LogManager.getLogger(PluginListener.class);
 	
-	public PluginListener(Map<String, URL> pluginMap, PluginRunner runner) {
-		this.pluginMap = pluginMap;
+	public PluginListener(Set<String> pluginSet, PluginRunner runner) {
+		this.pluginSet = pluginSet;
 		this.runner = runner;
 		try {
 			watcher = FileSystems.getDefault().newWatchService();
@@ -78,16 +78,16 @@ public class PluginListener implements Runnable {
 				}
 				
 				URL currentURL = null;
-				int currentSize = pluginMap.size();
+				int currentSize = pluginSet.size();
 				try {
 					currentURL = Paths.get(filename.toString()).toUri().toURL();
-					pluginMap.put(filename.toString(), currentURL);
+					pluginSet.add(filename.toString());
 				} catch (MalformedURLException e) {
 					log.error("Could not place plugin url in map in listener", e);
 				}
 				
 				// Means that the plugin was not already inside the map, and needs to be started.
-				if (currentSize != pluginMap.size()) {
+				if (currentSize != pluginSet.size()) {
 					runner.runPlugin(currentURL);
 				}
 				
