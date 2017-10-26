@@ -16,6 +16,8 @@ apply plugin: 'jacoco'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
+mainClassName='app.SimpleWebServer'
+group = "edu.rosehulman.csse477.gilderjw-decramrj"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -40,8 +42,6 @@ dependencies {
 
 }
 
-
-mainClassName='app.SimpleWebServer'
 
 if (System.getenv("CI_BUILD_TAG") != null) {
     version = "${System.getenv("CI_BUILD_TAG")}"
