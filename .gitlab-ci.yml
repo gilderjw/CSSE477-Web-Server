@@ -18,8 +18,8 @@ staging:
     - gcloud auth activate-service-account --key-file /tmp/$GCP_PROJECT_ID.json
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "rm -rf $INSTALL_DIR/CSSE477_Web_Server-*"
     - gcloud compute --project $GCP_PROJECT_ID scp --zone $GCP_ZONE build/distributions/* $GCP_USER@staging:~/public_html --quiet
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "unzip -o $INSTALL_DIR/CSSE_Web_Server-*"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cp $INSTALL_DIR/CSSE_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "unzip -o $INSTALL_DIR/CSSE477_Web_Server-*"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "$INSTALL_DIR/setup.sh $CI_VERSION"
   after_script:
     - rm /tmp/$GCP_PROJECT_ID.json
