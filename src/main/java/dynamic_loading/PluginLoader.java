@@ -10,7 +10,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import app.SimpleWebServer;
 import plugins.IPlugin;
 
 public class PluginLoader {
@@ -50,9 +53,6 @@ public class PluginLoader {
 			// File is a jar or war type
 
 			try {
-
-				System.out.println(current.toURI().toURL());
-
 				URL url = current.toURI().toURL();
 				this.plugins.add(this.loadPlugin(url));
 			} catch (MalformedURLException e) {
@@ -62,21 +62,32 @@ public class PluginLoader {
 		return this.plugins;
 	}
 
+	public Map<String, IPlugin> getPluginMappings() {
+		HashMap<String, IPlugin> ans = new HashMap<>();
+		for (IPlugin p : this.plugins) {
+			ans.put(SimpleWebServer.DEFAULT_PLUGIN, p);
+		}
+
+		return ans;
+	}
+
 	public IPlugin loadPlugin(URL url) {
 		ClassLoader cl = URLClassLoader.newInstance(new URL[] { url }, this.getClass().getClassLoader());
 		IPlugin plugin = null;
-
 		String contents = null;
+
+		System.out.println(url);
+
 		InputStream stream = cl.getResourceAsStream("config.bruh");
+		Scanner scan = new Scanner(stream);
+		contents = scan.nextLine();
 		try {
-			cl.loadClass("default_plugin.DefaultPlugin");
+			cl.loadClass(contents);
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		Scanner scan = new Scanner(stream);
-		contents = scan.nextLine();
-		System.out.println(contents);
+
 		scan.close();
 
 		Class<? extends IPlugin> runClass;
@@ -100,6 +111,7 @@ public class PluginLoader {
 			log.error("plugin cannot be loaded: ", e);
 		}
 
+		System.out.println("loaded plugin: " + url);
 		return plugin;
 	}
 }

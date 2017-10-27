@@ -25,6 +25,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +46,11 @@ public class Server implements Runnable {
 	private boolean stop;
 	private ServerSocket welcomeSocket;
 	// private HashMap<String, IRequestHandler> handlers;
-	private HashMap<String, IPlugin> plugins;
+	private Map<String, IPlugin> plugins;
+
+	public void setPlugins(Map<String, IPlugin> map) {
+		this.plugins = map;
+	}
 
 	/**
 	 * @param rootDirectory
@@ -98,6 +103,7 @@ public class Server implements Runnable {
 				// Create a handler for this incoming connection and start the handler in a new
 				// thread
 				ConnectionHandler handler = new ConnectionHandler(this, connectionSocket);
+
 				handler.setPlugins(this.plugins);
 				new Thread(handler).start();
 			}

@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import dynamic_loading.PluginListener;
 import dynamic_loading.PluginLoader;
 import plugins.IPlugin;
 import server.Server;
@@ -44,15 +45,15 @@ public class SimpleWebServer {
 			log.error("Could not create pluginLoader", e);
 		}
 
-		// Loads all currently available plugins to map to be run.
-		Set<IPlugin> plugins = pluginLoader.loadAvailablePlugins();
-
-		// PluginListener pluginListener = new PluginListener(plugins, pluginRunner);
-		// Thread pluginThread = new Thread(pluginListener);
-		// pluginThread.start();
-
 		// Create a run the server
 		Server server = new Server(rootDirectory, port);
+
+		Set<IPlugin> plugins = pluginLoader.loadAvailablePlugins();
+
+		// Loads all currently available plugins to map to be run.
+		PluginListener pluginListener = new PluginListener(pluginLoader, server);
+		Thread pluginThread = new Thread(pluginListener);
+		pluginThread.start();
 
 		// TODO: only one thing loaded
 		server.registerPlugin("DEFAULT_PLUGIN", plugins.toArray(new IPlugin[1])[0]);
