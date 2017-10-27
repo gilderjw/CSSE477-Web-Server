@@ -2,6 +2,7 @@ package dynamic_loading;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -9,13 +10,17 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import app.SimpleWebServer;
 import plugins.IPlugin;
 
 public class PluginLoader {
@@ -48,7 +53,8 @@ public class PluginLoader {
 			// File is a jar or war type
 
 			try {
-				this.plugins.add(this.loadPlugin(new URL(current.getPath())));
+				URL url = current.toURI().toURL();
+				this.plugins.add(this.loadPlugin(url));
 			} catch (MalformedURLException e) {
 				log.error("Error creating plugin from URL " + current.getPath() + "\n", e);
 			}
@@ -56,31 +62,56 @@ public class PluginLoader {
 		return this.plugins;
 	}
 
+	public Map<String, IPlugin> getPluginMappings() {
+		HashMap<String, IPlugin> ans = new HashMap<>();
+		for (IPlugin p : this.plugins) {
+			ans.put(SimpleWebServer.DEFAULT_PLUGIN, p);
+		}
+
+		return ans;
+	}
+
 	public IPlugin loadPlugin(URL url) {
 		ClassLoader cl = URLClassLoader.newInstance(new URL[] { url }, this.getClass().getClassLoader());
-
-		Class<?> clazz = null;
-		try {
-			clazz = Class.forName("plugins.IPlugin", true, cl);
-		} catch (ClassNotFoundException e) {
-			log.error("Could not find the class when running plugin", e);
-		}
-		Class<? extends IPlugin> runClass = clazz.asSubclass(IPlugin.class);
-
-		Constructor<? extends IPlugin> ctor = null;
-		try {
-			ctor = runClass.getConstructor();
-		} catch (NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
 		IPlugin plugin = null;
+		String contents = null;
+
+		System.out.println(url);
+
+		InputStream stream = cl.getResourceAsStream("config.bruh");
+		Scanner scan = new Scanner(stream);
+		contents = scan.nextLine();
 		try {
-			plugin = ctor.newInstance();
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			e.printStackTrace();
+			cl.loadClass(contents);
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
+		scan.close();
+
+		Class<? extends IPlugin> runClass;
+		try {
+			runClass = (Class<? extends IPlugin>) cl.loadClass(contents);
+
+			Constructor<? extends IPlugin> ctor = null;
+			try {
+				ctor = runClass.getConstructor();
+			} catch (NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			}
+
+			try {
+				plugin = ctor.newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			log.error("plugin cannot be loaded: ", e);
+		}
+
+		System.out.println("loaded plugin: " + url);
 		return plugin;
 	}
 }
