@@ -19,19 +19,21 @@ public class PluginListener implements Runnable {
 
 	private WatchService watcher;
 	private Path dir;
-	private final String LOCATION_TO_WATCH = "plugins";
+
 	private PluginLoader loader;
 	private Server serv;
 
+	String plugin_dir;
+
 	static final Logger log = LogManager.getLogger(PluginListener.class);
 
-	public PluginListener(PluginLoader loader, Server serv) {
+	public PluginListener(PluginLoader loader, Server serv, String plugin_dir) {
 		this.loader = loader;
 		this.serv = serv;
-
+		this.plugin_dir = plugin_dir;
 		try {
 			this.watcher = FileSystems.getDefault().newWatchService();
-			this.dir = Paths.get(this.LOCATION_TO_WATCH);
+			this.dir = Paths.get(this.plugin_dir);
 			this.dir.register(this.watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
 		} catch (IOException e) {
 			log.error("Directory could not be registered to watcher", e);

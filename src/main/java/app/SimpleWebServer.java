@@ -36,11 +36,12 @@ public class SimpleWebServer {
 
 		String rootDirectory = prop.getProperty("root_directory");
 		int port = Integer.parseInt((String) prop.get("port_number"));
+		String plugin_dir = prop.getProperty("plugin_dir");
 
 		// Loading plugins with map
 		PluginLoader pluginLoader = null;
 		try {
-			pluginLoader = new PluginLoader();
+			pluginLoader = new PluginLoader(plugin_dir);
 		} catch (FileNotFoundException e) {
 			log.error("Could not create pluginLoader", e);
 		}
@@ -51,7 +52,7 @@ public class SimpleWebServer {
 		Map<String, IPlugin> plugins = pluginLoader.loadAvailablePlugins();
 
 		// Loads all currently available plugins to map to be run.
-		PluginListener pluginListener = new PluginListener(pluginLoader, server);
+		PluginListener pluginListener = new PluginListener(pluginLoader, server, plugin_dir);
 		Thread pluginThread = new Thread(pluginListener);
 		pluginThread.start();
 

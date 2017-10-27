@@ -24,18 +24,19 @@ public class PluginLoader {
 
 	private Map<String, IPlugin> plugins;
 	private Path dir;
-	private final String PLUGIN_LOCATION = "plugins";
 	private File folder;
+	private String plugin_location;
 
 	static final Logger log = LogManager.getLogger(PluginLoader.class);
 
-	public PluginLoader() throws FileNotFoundException {
+	public PluginLoader(String plugin_location) throws FileNotFoundException {
 		this.plugins = new HashMap<>();
+		this.plugin_location = plugin_location;
 
-		this.dir = Paths.get(this.PLUGIN_LOCATION);
+		this.dir = Paths.get(this.plugin_location);
 		this.folder = this.dir.toFile();
 
-		File f = new File(this.PLUGIN_LOCATION);
+		File f = new File(this.plugin_location);
 		if (!f.exists()) {
 			f.mkdir();
 			// f.setExecutable(true, false);
