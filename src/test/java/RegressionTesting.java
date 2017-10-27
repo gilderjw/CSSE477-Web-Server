@@ -69,9 +69,10 @@ public class RegressionTesting {
 	@BeforeClass
 	public static void setUp() throws InterruptedException, FileNotFoundException {
 		String rootDirectory = "./webtest";
+		String pluginDir = "plugins";
 		PluginLoader pluginLoader = null;
 
-		pluginLoader = new PluginLoader();
+		pluginLoader = new PluginLoader(pluginDir);
 
 		// Create a run the server
 		server = new Server(rootDirectory, PORT);
@@ -79,7 +80,7 @@ public class RegressionTesting {
 		Map<String, IPlugin> plugins = pluginLoader.loadAvailablePlugins();
 
 		// Loads all currently available plugins to map to be run.
-		PluginListener pluginListener = new PluginListener(pluginLoader, server);
+		PluginListener pluginListener = new PluginListener(pluginLoader, server, pluginDir);
 		Thread pluginThread = new Thread(pluginListener);
 		pluginThread.start();
 
