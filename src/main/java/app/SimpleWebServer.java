@@ -3,8 +3,8 @@ package app;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +48,7 @@ public class SimpleWebServer {
 		// Create a run the server
 		Server server = new Server(rootDirectory, port);
 
-		Set<IPlugin> plugins = pluginLoader.loadAvailablePlugins();
+		Map<String, IPlugin> plugins = pluginLoader.loadAvailablePlugins();
 
 		// Loads all currently available plugins to map to be run.
 		PluginListener pluginListener = new PluginListener(pluginLoader, server);
@@ -56,7 +56,8 @@ public class SimpleWebServer {
 		pluginThread.start();
 
 		// TODO: only one thing loaded
-		server.registerPlugin("DEFAULT_PLUGIN", plugins.toArray(new IPlugin[1])[0]);
+		// server.registerPlugin("DEFAULT_PLUGIN", plugins.toArray(new IPlugin[1])[0]);
+		server.setPlugins(plugins);
 
 		Thread runner = new Thread(server);
 		runner.start();

@@ -11,21 +11,18 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import app.SimpleWebServer;
 import plugins.IPlugin;
 
 public class PluginLoader {
 
-	private Set<IPlugin> plugins;
+	private Map<String, IPlugin> plugins;
 	private Path dir;
 	private final String PLUGIN_LOCATION = "plugins";
 	private File folder;
@@ -33,7 +30,7 @@ public class PluginLoader {
 	static final Logger log = LogManager.getLogger(PluginLoader.class);
 
 	public PluginLoader() throws FileNotFoundException {
-		this.plugins = new HashSet<>();
+		this.plugins = new HashMap<>();
 
 		this.dir = Paths.get(this.PLUGIN_LOCATION);
 		this.folder = this.dir.toFile();
@@ -53,7 +50,7 @@ public class PluginLoader {
 
 	}
 
-	public Set<IPlugin> loadAvailablePlugins() {
+	public Map<String, IPlugin> loadAvailablePlugins() {
 		for (int i = 0; i < this.folder.listFiles().length; i++) {
 			File current = this.folder.listFiles()[i];
 			if (!FilenameUtils.getExtension(current.getName()).equals("war")
@@ -64,7 +61,7 @@ public class PluginLoader {
 
 			try {
 				URL url = current.toURI().toURL();
-				this.plugins.add(this.loadPlugin(url));
+				this.loadPlugin(url);
 			} catch (MalformedURLException e) {
 				log.error("Error creating plugin from URL " + current.getPath() + "\n", e);
 			}
@@ -73,55 +70,59 @@ public class PluginLoader {
 	}
 
 	public Map<String, IPlugin> getPluginMappings() {
-		HashMap<String, IPlugin> ans = new HashMap<>();
-		for (IPlugin p : this.plugins) {
-			ans.put(SimpleWebServer.DEFAULT_PLUGIN, p);
-		}
-
-		return ans;
+		return this.plugins;
 	}
 
-	public IPlugin loadPlugin(URL url) {
+	@SuppressWarnings("unchecked")
+	public void loadPlugin(URL url) {
 		ClassLoader cl = URLClassLoader.newInstance(new URL[] { url }, this.getClass().getClassLoader());
 		IPlugin plugin = null;
 		String contents = null;
+		String location = null;
 
 		System.out.println(url);
 
 		InputStream stream = cl.getResourceAsStream("config.bruh");
 		Scanner scan = new Scanner(stream);
-		contents = scan.nextLine();
-		try {
-			cl.loadClass(contents);
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		scan.close();
-
-		Class<? extends IPlugin> runClass;
-		try {
-			runClass = (Class<? extends IPlugin>) cl.loadClass(contents);
-
-			Constructor<? extends IPlugin> ctor = null;
+		
+		while (scan.hasNext()) {
+			// Location <space> class
+			String line = scan.nextLine();
+			location = line.split(" ")[0];
+			contents = line.split(" ")[1];
 			try {
-				ctor = runClass.getConstructor();
-			} catch (NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
+				cl.loadClass(contents);
+			} catch (ClassNotFoundException e1) {
+				log.error("Class not found from config file", e1);
 			}
 
-			try {
-				plugin = ctor.newInstance();
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		} catch (ClassNotFoundException e) {
-			log.error("plugin cannot be loaded: ", e);
-		}
+			scan.close();
 
-		System.out.println("loaded plugin: " + url);
-		return plugin;
+			Class<? extends IPlugin> runClass;
+			try {
+				runClass = (Class<? extends IPlugin>) cl.loadClass(contents);
+
+				Constructor<? extends IPlugin> ctor = null;
+				try {
+					ctor = runClass.getConstructor();
+				} catch (NoSuchMethodException | SecurityException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					plugin = ctor.newInstance();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			} catch (ClassNotFoundException e) {
+				log.error("plugin cannot be loaded: ", e);
+			}
+			
+			this.plugins.put(location, plugin);
+
+			System.out.println("loaded plugin: " + url);
+		}
+		
 	}
 }
