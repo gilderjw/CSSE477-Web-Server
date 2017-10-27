@@ -84,7 +84,7 @@ public class PluginLoader {
 
 		InputStream stream = cl.getResourceAsStream("config.bruh");
 		Scanner scan = new Scanner(stream);
-		
+
 		while (scan.hasNext()) {
 			// Location <space> class
 			String line = scan.nextLine();
@@ -95,8 +95,6 @@ public class PluginLoader {
 			} catch (ClassNotFoundException e1) {
 				log.error("Class not found from config file", e1);
 			}
-
-			scan.close();
 
 			Class<? extends IPlugin> runClass;
 			try {
@@ -118,11 +116,11 @@ public class PluginLoader {
 			} catch (ClassNotFoundException e) {
 				log.error("plugin cannot be loaded: ", e);
 			}
-			
+
 			this.plugins.put(location, plugin);
 
 			System.out.println("loaded plugin: " + url);
 		}
-		
+		scan.close();
 	}
 }
