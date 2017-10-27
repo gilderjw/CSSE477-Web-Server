@@ -37,15 +37,17 @@ public class PluginLoader {
 
 		this.dir = Paths.get(this.PLUGIN_LOCATION);
 		this.folder = this.dir.toFile();
-		if (!this.folder.exists()) {
-			log.error("Folder could not be created in PluginLoader");
-			throw new FileNotFoundException();
-		}
 
 		File f = new File(this.PLUGIN_LOCATION);
 		if (!f.exists()) {
 			f.mkdir();
 		}
+
+		if (!this.folder.exists()) {
+			log.error("Folder could not be created in PluginLoader");
+			throw new FileNotFoundException();
+		}
+
 	}
 
 	public Set<IPlugin> loadAvailablePlugins() {
