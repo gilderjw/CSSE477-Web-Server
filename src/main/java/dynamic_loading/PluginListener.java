@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 
 import org.apache.logging.log4j.LogManager;
@@ -44,10 +45,12 @@ public class PluginListener implements Runnable {
 	public synchronized void run() {
 		while (true) {
 			try {
-				this.watcher.take();
+				WatchKey key = this.watcher.take();
 				this.loader.loadAvailablePlugins();
 				this.serv.setPlugins(this.loader.getPluginMappings());
 
+				key.pollEvents();
+				key.reset();
 				// this.pluginSet = this.loader.loadAvailablePlugins();
 			} catch (InterruptedException e) {
 				return;
