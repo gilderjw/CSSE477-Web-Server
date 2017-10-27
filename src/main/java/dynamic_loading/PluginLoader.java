@@ -2,6 +2,7 @@ package dynamic_loading;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -10,6 +11,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
@@ -48,7 +50,11 @@ public class PluginLoader {
 			// File is a jar or war type
 
 			try {
-				this.plugins.add(this.loadPlugin(new URL(current.getPath())));
+
+				System.out.println(current.toURI().toURL());
+
+				URL url = current.toURI().toURL();
+				this.plugins.add(this.loadPlugin(url));
 			} catch (MalformedURLException e) {
 				log.error("Error creating plugin from URL " + current.getPath() + "\n", e);
 			}
@@ -58,27 +64,40 @@ public class PluginLoader {
 
 	public IPlugin loadPlugin(URL url) {
 		ClassLoader cl = URLClassLoader.newInstance(new URL[] { url }, this.getClass().getClassLoader());
-
-		Class<?> clazz = null;
-		try {
-			clazz = Class.forName("plugins.IPlugin", true, cl);
-		} catch (ClassNotFoundException e) {
-			log.error("Could not find the class when running plugin", e);
-		}
-		Class<? extends IPlugin> runClass = clazz.asSubclass(IPlugin.class);
-
-		Constructor<? extends IPlugin> ctor = null;
-		try {
-			ctor = runClass.getConstructor();
-		} catch (NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
 		IPlugin plugin = null;
+
+		String contents = null;
+		InputStream stream = cl.getResourceAsStream("config.bruh");
 		try {
-			plugin = ctor.newInstance();
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			e.printStackTrace();
+			cl.loadClass("default_plugin.DefaultPlugin");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Scanner scan = new Scanner(stream);
+		contents = scan.nextLine();
+		System.out.println(contents);
+		scan.close();
+
+		Class<? extends IPlugin> runClass;
+		try {
+			runClass = (Class<? extends IPlugin>) cl.loadClass(contents);
+
+			Constructor<? extends IPlugin> ctor = null;
+			try {
+				ctor = runClass.getConstructor();
+			} catch (NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			}
+
+			try {
+				plugin = ctor.newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			log.error("plugin cannot be loaded: ", e);
 		}
 
 		return plugin;
