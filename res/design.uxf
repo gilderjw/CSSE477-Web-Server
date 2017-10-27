@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.2">
-  <zoom_level>7</zoom_level>
+  <zoom_level>5</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>280</x>
-      <y>196</y>
-      <w>245</w>
-      <h>105</h>
+      <x>215</x>
+      <y>215</y>
+      <w>175</w>
+      <h>75</h>
     </coordinates>
     <panel_attributes>Server
 --
@@ -22,10 +22,10 @@ stop()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>756</x>
-      <y>336</y>
-      <w>245</w>
-      <h>77</h>
+      <x>865</x>
+      <y>370</y>
+      <w>175</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 IRequestHandler
@@ -36,10 +36,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>931</x>
-      <y>476</y>
-      <w>140</w>
-      <h>28</h>
+      <x>990</x>
+      <y>470</y>
+      <w>100</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>DeleteRequestHandler</panel_attributes>
     <additional_attributes/>
@@ -47,10 +47,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>931</x>
-      <y>511</y>
-      <w>140</w>
-      <h>28</h>
+      <x>990</x>
+      <y>495</y>
+      <w>100</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>GetRequestHandler</panel_attributes>
     <additional_attributes/>
@@ -58,10 +58,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>931</x>
-      <y>546</y>
-      <w>140</w>
-      <h>28</h>
+      <x>990</x>
+      <y>520</y>
+      <w>100</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>PutRequestHandler</panel_attributes>
     <additional_attributes/>
@@ -69,10 +69,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>931</x>
-      <y>581</y>
-      <w>140</w>
-      <h>28</h>
+      <x>990</x>
+      <y>545</y>
+      <w>100</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>GetRequestHandler</panel_attributes>
     <additional_attributes/>
@@ -80,10 +80,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>931</x>
-      <y>616</y>
-      <w>140</w>
-      <h>28</h>
+      <x>990</x>
+      <y>570</y>
+      <w>100</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>HeadRequestHandler</panel_attributes>
     <additional_attributes/>
@@ -91,10 +91,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>875</x>
-      <y>406</y>
-      <w>70</w>
-      <h>238</h>
+      <x>950</x>
+      <y>420</y>
+      <w>50</w>
+      <h>170</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;320.0;80.0;320.0</additional_attributes>
@@ -102,10 +102,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>875</x>
-      <y>588</y>
-      <w>70</w>
-      <h>21</h>
+      <x>950</x>
+      <y>550</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
@@ -113,10 +113,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>875</x>
-      <y>553</y>
-      <w>70</w>
-      <h>21</h>
+      <x>950</x>
+      <y>525</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
@@ -124,10 +124,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>875</x>
-      <y>518</y>
-      <w>70</w>
-      <h>21</h>
+      <x>950</x>
+      <y>500</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
@@ -135,10 +135,10 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>875</x>
-      <y>483</y>
-      <w>70</w>
-      <h>21</h>
+      <x>950</x>
+      <y>475</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
@@ -146,23 +146,23 @@ handleRequest(HttpRequest request, Server server)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>602</x>
-      <y>217</y>
-      <w>210</w>
-      <h>56</h>
+      <x>445</x>
+      <y>230</y>
+      <w>150</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>ConnectionHandler
 --
-HashMap&lt;String, IRequestHandler&gt; handlers</panel_attributes>
+HashMap&lt;String, Plugin&gt; handlers</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>105</x>
-      <y>70</y>
-      <w>161</w>
-      <h>49</h>
+      <x>90</x>
+      <y>125</y>
+      <w>115</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>SimpleWebServer
 --</panel_attributes>
@@ -171,10 +171,10 @@ HashMap&lt;String, IRequestHandler&gt; handlers</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>518</x>
-      <y>238</y>
-      <w>98</w>
-      <h>21</h>
+      <x>385</x>
+      <y>245</y>
+      <w>70</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
@@ -182,10 +182,10 @@ HashMap&lt;String, IRequestHandler&gt; handlers</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>175</x>
-      <y>112</y>
-      <w>119</w>
-      <h>119</h>
+      <x>140</x>
+      <y>155</y>
+      <w>85</w>
+      <h>85</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>150.0;150.0;10.0;150.0;10.0;10.0</additional_attributes>
@@ -193,21 +193,21 @@ HashMap&lt;String, IRequestHandler&gt; handlers</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>805</x>
-      <y>238</y>
-      <w>91</w>
-      <h>112</h>
+      <x>590</x>
+      <y>245</y>
+      <w>145</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>110.0;140.0;110.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>270.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>588</x>
-      <y>434</y>
-      <w>224</w>
-      <h>112</h>
+      <x>435</x>
+      <y>385</y>
+      <w>160</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>HttpRequest
 --
@@ -223,10 +223,10 @@ static HttpRequest read(InputStream stream)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1162</x>
-      <y>728</y>
-      <w>224</w>
-      <h>112</h>
+      <x>1155</x>
+      <y>650</y>
+      <w>160</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>HttpResponse
 --
@@ -242,10 +242,10 @@ static void write(OutputStream stream)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1162</x>
-      <y>497</y>
-      <w>196</w>
-      <h>126</h>
+      <x>1155</x>
+      <y>485</y>
+      <w>140</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>ResponseCreator
 --
@@ -263,10 +263,10 @@ HttpResponse getResponse()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1064</x>
-      <y>483</y>
-      <w>112</w>
-      <h>91</h>
+      <x>1085</x>
+      <y>475</y>
+      <w>80</w>
+      <h>65</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>140.0;110.0;80.0;110.0;80.0;10.0;10.0;10.0</additional_attributes>
@@ -274,10 +274,10 @@ HttpResponse getResponse()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1064</x>
-      <y>553</y>
-      <w>112</w>
-      <h>91</h>
+      <x>1085</x>
+      <y>525</y>
+      <w>80</w>
+      <h>65</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>140.0;10.0;80.0;10.0;80.0;110.0;10.0;110.0</additional_attributes>
@@ -285,10 +285,10 @@ HttpResponse getResponse()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1064</x>
-      <y>588</y>
-      <w>70</w>
-      <h>21</h>
+      <x>1085</x>
+      <y>550</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
@@ -296,10 +296,10 @@ HttpResponse getResponse()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1064</x>
-      <y>553</y>
-      <w>70</w>
-      <h>21</h>
+      <x>1085</x>
+      <y>525</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
@@ -307,10 +307,10 @@ HttpResponse getResponse()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1064</x>
-      <y>518</y>
-      <w>70</w>
-      <h>21</h>
+      <x>1085</x>
+      <y>500</y>
+      <w>50</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
@@ -318,10 +318,10 @@ HttpResponse getResponse()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1253</x>
-      <y>616</y>
-      <w>21</w>
-      <h>126</h>
+      <x>1220</x>
+      <y>570</y>
+      <w>15</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
@@ -329,12 +329,143 @@ HttpResponse getResponse()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>679</x>
-      <y>266</y>
-      <w>21</w>
-      <h>182</h>
+      <x>500</x>
+      <y>265</y>
+      <w>15</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;240.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>725</x>
+      <y>225</y>
+      <w>130</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+IPlugin
+--
+handleRequest(HttpRequest request, Server server)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>855</x>
+      <y>325</y>
+      <w>110</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>200.0;90.0;200.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>725</x>
+      <y>305</y>
+      <w>135</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>DefaultPlugin
+--
+Map&lt;String, IRequestHandler&gt; handlers
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>785</x>
+      <y>265</y>
+      <w>15</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>260</x>
+      <y>130</y>
+      <w>75</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>PluginLoader
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>200</x>
+      <y>140</y>
+      <w>70</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>135</y>
+      <w>405</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>790.0;380.0;630.0;380.0;630.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>355</y>
+      <w>80</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>PluginListener
+--
+run()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>205</x>
+      <y>285</y>
+      <w>100</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>180.0;10.0;180.0;190.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>100</x>
+      <y>155</y>
+      <w>40</w>
+      <h>235</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>60.0;450.0;10.0;450.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>160</x>
+      <y>150</y>
+      <w>120</w>
+      <h>215</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>220.0;10.0;220.0;70.0;10.0;70.0;10.0;410.0</additional_attributes>
   </element>
 </diagram>
