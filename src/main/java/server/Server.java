@@ -148,4 +148,12 @@ public class Server implements Runnable {
 			return this.welcomeSocket.isClosed();
 		return true;
 	}
+	
+	public void logInfo(String info) {
+		log.info(info);
+	}
+	
+	public void logException(String info, Exception e) {
+		log.error(info, e);
+	}
 }
