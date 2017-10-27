@@ -41,6 +41,9 @@ public class PluginLoader {
 		File f = new File(this.PLUGIN_LOCATION);
 		if (!f.exists()) {
 			f.mkdir();
+			// f.setExecutable(true, false);
+			f.setReadable(true, false);
+			f.setWritable(true, false);
 		}
 
 		if (!this.folder.exists()) {
