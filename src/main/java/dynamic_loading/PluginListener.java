@@ -53,34 +53,6 @@ public class PluginListener implements Runnable {
 				return;
 			}
 
-			// for (WatchEvent<?> event : key.pollEvents()) {
-			// WatchEvent.Kind<?> kind = event.kind();
-			//
-			// if (kind == OVERFLOW) {
-			// continue;
-			// }
-			//
-			// // The filename is the context of the event.
-			// @SuppressWarnings("unchecked")
-			// WatchEvent<Path> ev = (WatchEvent<Path>) event;
-			// Path filename = ev.context();
-			// System.out.println(filename);
-			//
-			// // Verify that the new file is a JAR or WAR file.
-			// URL currentURL = null;
-			// try {
-			// currentURL = filename.toUri().toURL();
-			// // System.out.println(currentURL);
-			// this.pluginSet.add(this.loader.loadPlugin(currentURL));
-			// } catch (MalformedURLException e) {
-			// log.error("Could not place plugin url in map in listener", e);
-			// }
-			// }
-
-			// boolean valid = key.reset();
-			// if (!valid) {
-			// break;
-			// }
 		}
 	}
 }

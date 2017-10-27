@@ -58,11 +58,6 @@ public class SimpleWebServer {
 		// TODO: only one thing loaded
 		server.registerPlugin("DEFAULT_PLUGIN", plugins.toArray(new IPlugin[1])[0]);
 
-		// server.registerRequestHandler(Protocol.POST, new PostRequestHandler());
-		// server.registerRequestHandler(Protocol.GET, new GetRequestHandler());
-		// server.registerRequestHandler(Protocol.HEAD, new HeadRequestHandler());
-		// server.registerRequestHandler(Protocol.DELETE, new DeleteRequestHandler());
-		// server.registerRequestHandler(Protocol.PUT, new PutRequestHandler());
 		Thread runner = new Thread(server);
 		runner.start();
 
