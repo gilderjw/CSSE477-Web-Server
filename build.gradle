@@ -167,5 +167,5 @@ publishing {
 }
 
 task e2eTesting(type: Test) {
-	include 'tests/e2e/RegressionTesting*'
+	include 'e2e/RegressionTesting*'
 }

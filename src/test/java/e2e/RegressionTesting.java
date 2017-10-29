@@ -101,7 +101,7 @@ public class RegressionTesting {
 
 	}
 
-	@Test
+	@Test(timeout = 1000)
 	public void testGet() throws IOException {
 		// good get
 		HttpURLConnection connection = RegressionTesting.request("GET", "index.html", null, null);
@@ -124,7 +124,7 @@ public class RegressionTesting {
 
 	}
 
-	@Test
+	@Test(timeout = 1000)
 	public void testPost() throws IOException {
 		String stuffToPost = "posted stuff";
 
@@ -156,7 +156,7 @@ public class RegressionTesting {
 		assertEquals(stuffToPost + "\r\n", response.toString());
 	}
 
-	@Test
+	@Test(timeout = 1000)
 	public void testDelete() throws IOException {
 
 		// get thing
@@ -188,7 +188,7 @@ public class RegressionTesting {
 		assertEquals(404, connection.getResponseCode());
 	}
 
-	@Test
+	@Test(timeout = 1000)
 	public void testPut() throws IOException {
 		String stuffToPost = "put stuff";
 		// exist POST
