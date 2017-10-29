@@ -13,19 +13,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import dynamic_loading.PluginListener;
-import dynamic_loading.PluginLoader;
-import plugins.IPlugin;
-import server.Server;
-
 public class RegressionTesting {
-	static Server server;
 	public static final int PORT = 80;
 
 	public static HttpURLConnection request(String type, String file, String[][] headers, String body) {
@@ -70,41 +63,16 @@ public class RegressionTesting {
 
 	@BeforeClass
 	public static void setUp() throws InterruptedException, FileNotFoundException {
-		String rootDirectory = "./webtest";
-		String pluginDir = "plugins";
-		PluginLoader pluginLoader = null;
-
-		pluginLoader = new PluginLoader(pluginDir);
-
-		// Create a run the server
-		server = new Server(rootDirectory, PORT);
-
-		Map<String, IPlugin> plugins = pluginLoader.loadAvailablePlugins();
-
-		// Loads all currently available plugins to map to be run.
-		PluginListener pluginListener = new PluginListener(pluginLoader, server, pluginDir);
-		Thread pluginThread = new Thread(pluginListener);
-		pluginThread.start();
-
-		// TODO: only one thing loaded
-		// server.registerPlugin("DEFAULT_PLUGIN", plugins.toArray(new IPlugin[1])[0]);
-		server.setPlugins(plugins);
-
-		Thread runner = new Thread(server);
-		runner.start();
-
-		while (server.isStoped()) {
-			Thread.sleep(100);
-		}
 
 	}
 
 	@AfterClass
 	public static void tearDown() throws IOException, InterruptedException {
-		server.stop();
-		while (!server.isStoped()) {
-			Thread.sleep(1000);
-		}
+
+		request("DELETE", "delete.txt", null, null);
+		request("DELETE", "get.txt", null, null);
+		request("DELETE", "post.txt", null, null);
+		request("DELETE", "put.txt", null, null);
 
 		File postTxt = new File("./webtest/post.txt");
 		postTxt.delete();
@@ -131,10 +99,6 @@ public class RegressionTesting {
 		rm = new File("./webtest/put.fakenews");
 		rm.delete();
 
-		request("DELETE", "delete.txt", null, null);
-		request("DELETE", "get.txt", null, null);
-		request("DELETE", "post.txt", null, null);
-		request("DELETE", "put.txt", null, null);
 	}
 
 	@Test
