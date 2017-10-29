@@ -164,3 +164,7 @@ publishing {
         }
     }
 }
+
+task e2eTesting(type: Test) {
+	include 'tests/RegressionTesting*'
+}
