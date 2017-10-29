@@ -135,7 +135,6 @@ public class RegressionTesting {
 
 	@Test
 	public void testGet() throws IOException {
-		fail();
 		// good get
 		HttpURLConnection connection = this.request("GET", "get.txt", null, null);
 		InputStream is = connection.getInputStream();
