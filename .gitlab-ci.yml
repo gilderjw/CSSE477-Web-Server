@@ -68,5 +68,5 @@ restore:
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cd $INSTALL_DIR/.. && unzip -o backup.zip"
   tags:
     - RJandJim
-  when: on_failure
+  when: e2eTesting.state.failure != null
   
