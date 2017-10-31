@@ -14,7 +14,10 @@ unzip -o $zipfile
 rm ./startserver.sh
 ln -s ./$version/bin/CSSE477_Web_Server ./startserver.sh
 mv ./$version/application.properties .
-cp -rp ./$version/web .
+cp -rp ./$version/web .\
+
+# install the default plugins
+cp -rp ./$version/plugins ./
 
 # stop old server
 sudo systemctl stop webServer
