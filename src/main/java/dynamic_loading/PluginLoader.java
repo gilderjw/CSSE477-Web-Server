@@ -84,9 +84,9 @@ public class PluginLoader {
 
 		InputStream stream = cl.getResourceAsStream("config.bruh");
 		Scanner scan = new Scanner(stream);
-		
+
 		String pluginDir = scan.nextLine();
-		File f = new File(pluginDir);
+		File f = new File("web/" + pluginDir);
 		if (!f.exists()) {
 			f.mkdir();
 			// f.setExecutable(true, false);
@@ -131,7 +131,7 @@ public class PluginLoader {
 			} else {
 				this.plugins.put(pluginDir + location, plugin);
 			}
-			
+
 			log.info("loaded plugin: " + url);
 		}
 		scan.close();
