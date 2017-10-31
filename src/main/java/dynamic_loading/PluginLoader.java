@@ -18,6 +18,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import app.SimpleWebServer;
 import plugins.IPlugin;
 
 public class PluginLoader {
@@ -81,10 +82,17 @@ public class PluginLoader {
 		String contents = null;
 		String location = null;
 
-		System.out.println(url);
-
 		InputStream stream = cl.getResourceAsStream("config.bruh");
 		Scanner scan = new Scanner(stream);
+		
+		String pluginDir = scan.nextLine();
+		File f = new File(pluginDir);
+		if (!f.exists()) {
+			f.mkdir();
+			// f.setExecutable(true, false);
+			f.setReadable(true, false);
+			f.setWritable(true, false);
+		}
 
 		while (scan.hasNext()) {
 			// Location <space> class
@@ -118,9 +126,13 @@ public class PluginLoader {
 				log.error("plugin cannot be loaded: ", e);
 			}
 
-			this.plugins.put(location, plugin);
-
-			System.out.println("loaded plugin: " + url);
+			if (location.equals(SimpleWebServer.DEFAULT_PLUGIN)) {
+				this.plugins.put(location, plugin);
+			} else {
+				this.plugins.put(pluginDir + location, plugin);
+			}
+			
+			log.info("loaded plugin: " + url);
 		}
 		scan.close();
 	}
