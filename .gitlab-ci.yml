@@ -66,6 +66,7 @@ restore:
   script:
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "rm -rf $INSTALL_DIR/*"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cd $INSTALL_DIR/.. && unzip -o backup.zip"
+    - exit 1
   tags:
     - RJandJim
   when: on_failure
