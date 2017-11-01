@@ -103,6 +103,7 @@ public class RegressionTesting {
 
 	@Test(timeout = 1000)
 	public void testGet() throws IOException {
+		fail();
 		// good get
 		HttpURLConnection connection = RegressionTesting.request("GET", "get.txt", null, null);
 		InputStream is = connection.getInputStream();
