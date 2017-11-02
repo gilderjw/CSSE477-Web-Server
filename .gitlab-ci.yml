@@ -39,7 +39,7 @@ production:
     - ./gradlew distZip
     - echo $GCP_SERVICE_KEY > /tmp/$GCP_PROJECT_ID.json
     - gcloud auth activate-service-account --key-file /tmp/$GCP_PROJECT_ID.json
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production--command "cd $INSTALL_DIR/.. && zip -r backup.zip public_html/"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "cd $INSTALL_DIR/.. && zip -r backup.zip public_html/"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "rm -rf $INSTALL_DIR/*"
     - gcloud compute --project $GCP_PROJECT_ID scp --zone $GCP_ZONE build/distributions/* $GCP_USER@production:~/public_html --quiet
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "unzip -o $INSTALL_DIR/CSSE477_Web_Server-* -d $INSTALL_DIR"
