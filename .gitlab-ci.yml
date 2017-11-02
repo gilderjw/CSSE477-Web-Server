@@ -2,7 +2,8 @@ stages:
   - build
   - staging
   - production
-  - e2eTesting
+  - e2eTestingProd
+  - e2eTestingStage  
   - restore
 
 build:
@@ -53,13 +54,6 @@ production:
     - RJandJim
   only:
     - tags
-
-e2eTesting:
-  stage: e2eTesting
-  script:
-  - ./gradlew e2eTesting
-  tags:
-    - RJandJim
     
 restore:
   stage: restore
@@ -70,4 +64,23 @@ restore:
   tags:
     - RJandJim
   when: on_failure
+  
+  e2eTestingProd:
+  stage: e2eTestingProd
+  script:
+  - ./gradlew e2eTesting -Durl=35.199.33.62
+  tags:
+    - RJandJim
+  only:
+    - tags
+
+
+e2eTestingStage:
+  stage: e2eTestingStage
+  script:
+  - ./gradlew e2eTesting -Durl=35.199.2.29
+  tags:
+    - RJandJim
+  only:
+    - master
   
