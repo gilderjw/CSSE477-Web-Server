@@ -65,7 +65,7 @@ restore:
     - RJandJim
   when: on_failure
   
-  e2eTestingProd:
+e2eTestingProd:
   stage: e2eTestingProd
   script:
   - ./gradlew e2eTesting -Durl=35.199.33.62
