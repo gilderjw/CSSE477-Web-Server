@@ -167,5 +167,11 @@ publishing {
 }
 
 task e2eTesting(type: Test) {
+	environment "url", "35.199.2.29"
+	include 'e2e/RegressionTesting*'
+}
+
+task e2eTestingProd(type: Test) {
+ 	environment "url", "35.199.33.62"
 	include 'e2e/RegressionTesting*'
 }

@@ -68,20 +68,16 @@ restore:
 e2eTestingProd:
   stage: e2eTestingProd
   script:
-  - ./gradlew e2eTesting -Durl=35.199.33.62
+  - ./gradlew e2eTestingProd
   tags:
     - RJandJim
   only:
     - tags
 
-
 e2eTestingStage:
   stage: e2eTestingStage
-  environment:
-    url: 35.199.2.29
-    
   script:
-  - ./gradlew e2eTesting -Durl=35.199.2.29
+  - ./gradlew e2eTesting 
   tags:
     - RJandJim
   only:

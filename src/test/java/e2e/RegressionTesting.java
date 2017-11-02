@@ -25,7 +25,7 @@ public class RegressionTesting {
 		HttpURLConnection connection = null;
 		try {
 
-			String ip = System.getProperty("url");
+			String ip = System.getenv("url");
 			System.out.println(ip);
 			
 			// Create connection
