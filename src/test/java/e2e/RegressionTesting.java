@@ -25,8 +25,11 @@ public class RegressionTesting {
 		HttpURLConnection connection = null;
 		try {
 
+			String ip = System.getProperty("url");
+			System.out.println(ip);
+			
 			// Create connection
-			URL url = new URL("http://35.199.2.29:" + PORT + "/" + file);
+			URL url = new URL("http://" + ip + ":" + PORT + "/" + file);
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod(type);
 
