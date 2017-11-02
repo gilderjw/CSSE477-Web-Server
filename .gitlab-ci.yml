@@ -77,8 +77,9 @@ e2eTestingProd:
 
 e2eTestingStage:
   stage: e2eTestingStage
-  variables:
-    url=35.199.2.29
+  environment:
+    url: 35.199.2.29
+    
   script:
   - ./gradlew e2eTesting -Durl=35.199.2.29
   tags:
