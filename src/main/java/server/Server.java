@@ -25,6 +25,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,7 +48,9 @@ public class Server implements Runnable {
 	private ServerSocket welcomeSocket;
 	// private HashMap<String, IRequestHandler> handlers;
 	private Map<String, IPlugin> plugins;
-
+	private HashSet<String> bannedIPs;
+	private HashMap<String, Integer> requestsInLastSecond;
+	
 	public void setPlugins(Map<String, IPlugin> map) {
 		this.plugins = map;
 	}
@@ -61,6 +64,8 @@ public class Server implements Runnable {
 		this.port = port;
 		this.stop = true;
 		this.plugins = new HashMap<>();
+		this.bannedIPs = new HashSet<>();
+		this.requestsInLastSecond = new HashMap<>();
 	}
 
 	/**
@@ -91,11 +96,43 @@ public class Server implements Runnable {
 			this.welcomeSocket = new ServerSocket(this.port);
 			this.stop = false;
 			// Now keep welcoming new connections until stop flag is set to true
+			long lastTime = System.currentTimeMillis();
 			while (true) {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
+				String addr = connectionSocket.getRemoteSocketAddress().toString();
+				addr = addr.substring(1, addr.lastIndexOf(':'));
+				
+				
+				if (this.bannedIPs.contains(addr)) {
+					connectionSocket.close();
+					System.out.println("User " + addr + " denied");
+					continue;
+				} else {
+					System.out.println(addr);
+				}
+				
+				// If it has been 1 seconds, wipe requests
+				if (System.currentTimeMillis() - lastTime >= 1000) {
+					this.requestsInLastSecond.clear();
+					lastTime = System.currentTimeMillis();
+				}
+				
+				if (this.requestsInLastSecond.containsKey(addr)) {
+					int requests = this.requestsInLastSecond.get(addr);
+					if (++requests > 5) { //malicious user
+						connectionSocket.close();
+						this.bannedIPs.add(addr);
+						System.out.println("User " + addr + " banned");
+						continue;
+					}
+					this.requestsInLastSecond.put(addr, requests);
+				} else {
+					this.requestsInLastSecond.put(addr, 1);
+				}
 
+				
 				// Come out of the loop if the stop flag is set
 				if (this.stop)
 					break;
