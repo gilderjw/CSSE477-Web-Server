@@ -124,7 +124,10 @@ public class Server implements Runnable {
 					if (++requests > 5) { //malicious user
 						connectionSocket.close();
 						this.bannedIPs.add(addr);
-						System.out.println("User " + addr + " banned");
+
+						Process p = Runtime.getRuntime().exec("sudo iptables -A INPUT -s " + addr + " -j DROP");
+						p.waitFor();
+						System.out.println("User " + addr + " banned");						
 						continue;
 					}
 					this.requestsInLastSecond.put(addr, requests);
