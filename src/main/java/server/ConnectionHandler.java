@@ -128,6 +128,7 @@ public class ConnectionHandler implements Runnable {
 				response = rc.setResponseFile(null).setResponseStatus(Protocol.BAD_REQUEST_CODE)
 						.setResponsePhrase(Protocol.BAD_REQUEST_TEXT).getResponse();
 			} else {
+				System.out.println(request.getUri());
 				if (this.plugins.containsKey(request.getUri())) {
 					response = this.plugins.get(request.getUri()).getHandler(request.getMethod()).handleRequest(request,
 							this.server);
