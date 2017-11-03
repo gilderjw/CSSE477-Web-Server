@@ -26,7 +26,7 @@ staging:
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo unzip -o $INSTALL_DIR/CSSE477_Web_Server-* -d $INSTALL_DIR"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo chmod +x $INSTALL_DIR/setup.sh"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cd $INSTALL_DIR && ./setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cd $INSTALL_DIR && sudo ./setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo chown -R webserver:webserver $INSTALL_DIR/"
     
    
@@ -49,7 +49,7 @@ production:
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo unzip -o $INSTALL_DIR/CSSE477_Web_Server-* -d $INSTALL_DIR"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo chmod +x $INSTALL_DIR/setup.sh"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "cd $INSTALL_DIR && ./setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "cd $INSTALL_DIR && sudo ./setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo chown -R webserver:webserver $INSTALL_DIR/"
     - ./gradlew publish
   after_script:
