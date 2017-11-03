@@ -2,6 +2,8 @@
 Description=webServer
 
 [Service]
+User=webserver
+Group=webserver
 ExecStart=/bin/bash /home/distribution/public_html/startserver.sh
 WorkingDirectory=/home/distribution/public_html
 ExecReload=/bin/kill -HUP $MAINPID

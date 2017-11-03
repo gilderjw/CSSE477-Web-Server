@@ -9,6 +9,9 @@ echo $version
 sudo systemctl stop webServer
 sudo systemctl disable webServer
 
+# redirect 8080 to 80
+sudo iptables -A PREROUTING -t nat -i ens4 -p tcp --dport 80 -j REDIRECT --to-port 8080
+
 # install the latest snapshot
 unzip -o $zipfile
 rm ./startserver.sh

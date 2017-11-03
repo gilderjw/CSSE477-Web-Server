@@ -26,6 +26,8 @@ staging:
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "chmod +x $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cd $INSTALL_DIR && ./setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "chown -R webserver:webserver $INSTALL_DIR/"
+    
    
   after_script:
     - rm /tmp/$GCP_PROJECT_ID.json
@@ -47,6 +49,7 @@ production:
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "chmod +x $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "cd $INSTALL_DIR && ./setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "chown -R webserver:webserver $INSTALL_DIR/"
     - ./gradlew publish
   after_script:
     - rm /tmp/$GCP_PROJECT_ID.json
