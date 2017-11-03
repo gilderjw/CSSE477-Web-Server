@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.Map;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -68,6 +69,11 @@ public class RegressionTesting {
 		return null;
 	}
 
+	@Before
+	public void sleep() throws InterruptedException {
+		Thread.sleep(1000);
+	}
+
 	@BeforeClass
 	public static void setUp() throws InterruptedException, FileNotFoundException {
 		String rootDirectory = "./webtest";
@@ -78,6 +84,8 @@ public class RegressionTesting {
 
 		// Create a run the server
 		server = new Server(rootDirectory, PORT);
+
+		// server.setDosProtect(false);
 
 		Map<String, IPlugin> plugins = pluginLoader.loadAvailablePlugins();
 

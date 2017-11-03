@@ -21,6 +21,7 @@
 
 package server;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -50,7 +51,9 @@ public class Server implements Runnable {
 	private Map<String, IPlugin> plugins;
 	private HashSet<String> bannedIPs;
 	private HashMap<String, Integer> requestsInLastSecond;
-	
+	private long lastTime;
+	private boolean dosProtect = true;
+
 	public void setPlugins(Map<String, IPlugin> map) {
 		this.plugins = map;
 	}
@@ -86,6 +89,47 @@ public class Server implements Runnable {
 		return this.port;
 	}
 
+	public void setDosProtect(boolean on) {
+		this.dosProtect = on;
+	}
+
+	public boolean isAllowed(String addr, Socket connectionSocket) throws IOException, InterruptedException {
+		if (!this.dosProtect) {
+			return true;
+		}
+
+		if (this.bannedIPs.contains(addr)) {
+			connectionSocket.close();
+			System.out.println("User " + addr + " denied");
+			return false;
+		} else {
+			System.out.println(addr);
+		}
+
+		// If it has been 1 seconds, wipe requests
+		if (System.currentTimeMillis() - lastTime >= 1000) {
+			this.requestsInLastSecond.clear();
+			lastTime = System.currentTimeMillis();
+		}
+
+		if (this.requestsInLastSecond.containsKey(addr)) {
+			int requests = this.requestsInLastSecond.get(addr);
+			if (++requests > 10) { // malicious user
+				connectionSocket.close();
+				this.bannedIPs.add(addr);
+
+				Process p = Runtime.getRuntime().exec("sudo iptables -A INPUT -s " + addr + " -j DROP");
+				p.waitFor();
+				System.out.println("User " + addr + " banned");
+				return false;
+			}
+			this.requestsInLastSecond.put(addr, requests);
+		} else {
+			this.requestsInLastSecond.put(addr, 1);
+		}
+		return true;
+	}
+
 	/**
 	 * The entry method for the main server thread that accepts incoming TCP
 	 * connection request and creates a {@link ConnectionHandler} for the request.
@@ -96,56 +140,26 @@ public class Server implements Runnable {
 			this.welcomeSocket = new ServerSocket(this.port);
 			this.stop = false;
 			// Now keep welcoming new connections until stop flag is set to true
-			long lastTime = System.currentTimeMillis();
+			lastTime = System.currentTimeMillis();
 			while (true) {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
 				String addr = connectionSocket.getRemoteSocketAddress().toString();
 				addr = addr.substring(1, addr.lastIndexOf(':'));
-				
-				
-				if (this.bannedIPs.contains(addr)) {
-					connectionSocket.close();
-					System.out.println("User " + addr + " denied");
-					continue;
-				} else {
-					System.out.println(addr);
-				}
-				
-				// If it has been 1 seconds, wipe requests
-				if (System.currentTimeMillis() - lastTime >= 1000) {
-					this.requestsInLastSecond.clear();
-					lastTime = System.currentTimeMillis();
-				}
-				
-				if (this.requestsInLastSecond.containsKey(addr)) {
-					int requests = this.requestsInLastSecond.get(addr);
-					if (++requests > 5) { //malicious user
-						connectionSocket.close();
-						this.bannedIPs.add(addr);
 
-						Process p = Runtime.getRuntime().exec("sudo iptables -A INPUT -s " + addr + " -j DROP");
-						p.waitFor();
-						System.out.println("User " + addr + " banned");						
-						continue;
-					}
-					this.requestsInLastSecond.put(addr, requests);
-				} else {
-					this.requestsInLastSecond.put(addr, 1);
-				}
-
-				
 				// Come out of the loop if the stop flag is set
 				if (this.stop)
 					break;
 
-				// Create a handler for this incoming connection and start the handler in a new
-				// thread
-				ConnectionHandler handler = new ConnectionHandler(this, connectionSocket);
+				if (this.isAllowed(addr, connectionSocket)) {
+					// Create a handler for this incoming connection and start the handler in a new
+					// thread
+					ConnectionHandler handler = new ConnectionHandler(this, connectionSocket);
 
-				handler.setPlugins(this.plugins);
-				new Thread(handler).start();
+					handler.setPlugins(this.plugins);
+					new Thread(handler).start();
+				}
 			}
 			this.welcomeSocket.close();
 		} catch (Exception e) {
@@ -188,11 +202,11 @@ public class Server implements Runnable {
 			return this.welcomeSocket.isClosed();
 		return true;
 	}
-	
+
 	public void logInfo(String info) {
 		log.info(info);
 	}
-	
+
 	public void logException(String info, Exception e) {
 		log.error(info, e);
 	}
