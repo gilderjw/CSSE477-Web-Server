@@ -22,11 +22,11 @@ staging:
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cd $INSTALL_DIR/.. && zip -r backup.zip public_html/"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo rm -rf $INSTALL_DIR/*"
     - gcloud compute --project $GCP_PROJECT_ID scp --zone $GCP_ZONE build/distributions/* $GCP_USER@staging:~/public_html --quiet
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "unzip -o $INSTALL_DIR/CSSE477_Web_Server-* -d $INSTALL_DIR"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "chmod +x $INSTALL_DIR/setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo unzip -o $INSTALL_DIR/CSSE477_Web_Server-* -d $INSTALL_DIR"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo chmod +x $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "cd $INSTALL_DIR && ./setup.sh"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "chown -R webserver:webserver $INSTALL_DIR/"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@staging --command "sudo chown -R webserver:webserver $INSTALL_DIR/"
     
    
   after_script:
@@ -45,11 +45,11 @@ production:
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "cd $INSTALL_DIR/.. && zip -r backup.zip public_html/"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo rm -rf $INSTALL_DIR/*"
     - gcloud compute --project $GCP_PROJECT_ID scp --zone $GCP_ZONE build/distributions/* $GCP_USER@production:~/public_html --quiet
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "unzip -o $INSTALL_DIR/CSSE477_Web_Server-* -d $INSTALL_DIR"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "chmod +x $INSTALL_DIR/setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo unzip -o $INSTALL_DIR/CSSE477_Web_Server-* -d $INSTALL_DIR"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo cp $INSTALL_DIR/CSSE477_Web_Server-*/scripts/setup.sh $INSTALL_DIR/setup.sh"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo chmod +x $INSTALL_DIR/setup.sh"
     - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "cd $INSTALL_DIR && ./setup.sh"
-    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "chown -R webserver:webserver $INSTALL_DIR/"
+    - gcloud compute ssh --zone $GCP_ZONE $GCP_USER@production --command "sudo chown -R webserver:webserver $INSTALL_DIR/"
     - ./gradlew publish
   after_script:
     - rm /tmp/$GCP_PROJECT_ID.json
