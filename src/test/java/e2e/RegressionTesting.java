@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class RegressionTesting {
 
 			String ip = System.getenv("url");
 			System.out.println(ip);
-			
+
 			// Create connection
 			URL url = new URL("http://" + ip + ":" + PORT + "/" + file);
 			connection = (HttpURLConnection) url.openConnection();
@@ -67,6 +68,11 @@ public class RegressionTesting {
 	@BeforeClass
 	public static void setUp() throws InterruptedException, FileNotFoundException {
 
+	}
+
+	@Before
+	public void sleep() throws InterruptedException {
+		Thread.sleep(1000);
 	}
 
 	@AfterClass
