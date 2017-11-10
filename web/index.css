@@ -1,0 +1,45 @@
+body {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+#container {
+    display: table;
+    width: 100%;
+    border-style: solid;
+    border-color: black;
+}
+
+#hash-incrementer {
+    display: table-cell;
+    width: 50%;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    padding-left: 2em;
+}
+
+#hash-table {
+    border-style: solid;
+    border-color: black;
+    margin-top: 1em;
+}
+
+#hash-table td{
+    border-style: solid;
+    border-color: black;
+    padding: 1em;
+}
+
+#chatbox {
+    display: table-cell;
+    width: 50%;
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+#chat-text-area {
+    border-style: solid;
+    border-color: black;
+    overflow: auto;
+    height: 200px;
+    margin-top: 1em;
+}

@@ -1,8 +1,49 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<title>Test Page</title>
+    <title>Team Bruh as a Service</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="index.css" rel="stylesheet">
 </head>
+
 <body>
-	<p>Test Page Successful! CI is neat</p>
+    <h1>
+        Team Bruh Chat and HashMap as a Service
+    </h1>
+
+    <div id="container">
+        <div id="hash-incrementer">
+            <form>
+                Hash String:
+                <br>
+                <input type="text" id="hash-input">
+                <br>  
+                <br>
+                <input type="submit" value="Send" id="send-hash">
+            </form>
+            <table id="hash-table"></table>
+        </div>
+
+        <div id="chatbox">
+            <form>
+                Username:
+                <br>
+                <input type="text" id="username-input">
+                <br> Send message:
+                <br>
+                <input type="text" id="message-input">
+                <br>
+                <br>
+                <input type="submit" value="Send" id="send-message">
+            </form>
+            <div id="chat-text-area"></div>
+        </div>
+    </div>
+
+    <script src="jquery-3.1.1.js"></script>
+    <script src="index.js"></script>
 </body>
-</html>asdf
+
+</html>

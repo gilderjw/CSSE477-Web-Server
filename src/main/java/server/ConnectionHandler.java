@@ -157,6 +157,15 @@ public class ConnectionHandler implements Runnable {
 		response.put("Access-Control-Allow-Origin", "*"); // Allow any origin
 		response.put("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
 		response.put("Access-Control-Allow-Headers", "Content-Type, x-nocontent");
+		
+		ResponseCreator options = new ResponseCreator();
+		rc.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE).setResponseVersion(Protocol.VERSION);
+		if (request.getMethod().equals("OPTIONS")) {
+			response = rc.setResponseFile(null)
+						.setResponseStatus(Protocol.OK_CODE)
+						.setResponsePhrase(Protocol.OK_TEXT)
+						.getResponse();
+		}
 
 		try {
 			// Write response and we are all done so close the socket
