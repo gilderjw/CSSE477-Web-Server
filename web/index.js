@@ -15,8 +15,8 @@
         }
     */
 
-    const chatUrl = "http://104.197.129.249/chatroom/msgtest.json";
-    const hashUrl = "http://104.197.129.249/HaaS/";
+    const chatUrl = "http://JIM-PC.rose-hulman.edu:8080/chatroom/msgtest.json";
+    const hashUrl = "http://JIM-PC.rose-hulman.edu:8080/HaaS/";
 
     function initTestChat() {
 
@@ -148,6 +148,7 @@
                     hashes.records.forEach((hash) => {
                         displayHash(hash);
                     });
+                    loadChat();
                 },
                 error: (request, status, error) => {
                     console.log(error, status, request);
@@ -179,6 +180,7 @@
                         hashes.records.forEach((hash) => {
                             displayHash(hash);
                         });
+                        loadChat();
                     }
                     
                 },
@@ -260,6 +262,7 @@
                         hashes.records.forEach((hash) => {
                             displayHash(hash);
                         });
+                        loadChat();
                     }
                 },
                 error: (request, status, error) => {
