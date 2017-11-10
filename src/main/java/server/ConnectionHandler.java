@@ -153,6 +153,11 @@ public class ConnectionHandler implements Runnable {
 					.setResponsePhrase(Protocol.BAD_REQUEST_TEXT).getResponse();
 		}
 
+		// dont even worry about xss my dude
+		response.put("Access-Control-Allow-Origin", "*"); // Allow any origin
+		response.put("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
+		response.put("Access-Control-Allow-Headers", "Content-Type, x-nocontent");
+
 		try {
 			// Write response and we are all done so close the socket
 			response.write(outStream);
