@@ -112,3 +112,122 @@ Test plan:
 2: Request sensitive file
 
 3: Server does not send it
+
+## Application Information
+### Team Bruh Chat and HashMap as a Service
+
+Description: This application hits up a microservice for a hashmap giving incrementing numbers, along with another microservice for a chatbox.
+
+Feature 1: Retrieve chat stuff
+    Method: GET
+    URI:    /chatroom/msgtest.json/
+    Request Body:
+        <none>
+    Response Body:
+        {
+            "code": 200,
+            "message": "OK",
+            "payload":
+            [
+                {
+                    "username": "JimBob",
+                    "mesage": "JimBob is super rad."
+                }
+            ]
+        }
+        
+Feature 2: Post chat stuff
+    Method: POST
+    URI:    /chatroom/msgtest.json/
+    Request Body:
+        {
+            "username": "JimBob",
+            "mesage": "JimBob is super rad."
+        }
+    Response Body:
+        {
+            "code": 200,
+            "message": "OK",
+            "payload":
+            [
+                {
+                    "usesrname": "JimBob",
+                    "mesage": "JimBob is super rad."
+                }
+            ]
+        }
+        
+Feature 3: Retrieve hash stuff
+    Method: GET
+    URI:    /HaaS/
+    Request Body:
+        <none>
+    Response Body:
+        {
+            "code": 200,
+            "message": "OK",
+            "payload":
+            [
+                {
+                    "hashString": "JimBob",
+                    "value": 12
+                }
+            ]
+        }
+        
+Feature 4: Create hash stuff
+    Method: POST
+    URI:    /HaaS/
+    Request Body:
+        {
+            "hashString": "JimBob",
+            "value": 0
+        }
+    Response Body:
+        {
+            "code": 200,
+            "message": "OK",
+            "payload":
+            [
+                {
+                    "hashString": "JimBob",
+                    "value": 12
+                }
+            ]
+        }
+        
+Feature 5: Update hash stuff
+    Method: PUT
+    URI:    /HaaS/
+    Request Body:
+        {
+            "hashString": "JimBob",
+            "value": 1
+        }
+    Response Body:
+        {
+            "code": 200,
+            "message": "OK",
+            "payload":
+            [
+                {
+                    "hashString": "JimBob",
+                    "value": 1
+                }
+            ]
+        }
+        
+Feature 6: Delete hash stuff
+    Method: DELETE
+    URI:    /HaaS/
+    Request Body:
+        {
+            "hashString": "JimBob",
+            "value": 12
+        }
+    Response Body:
+        {
+            "code": 200,
+            "message": "OK",
+            "payload": []
+        }
