@@ -118,6 +118,7 @@ Test plan:
 
 Description: This application hits up a microservice for a hashmap giving incrementing numbers, along with another microservice for a chatbox.
 
+```
 Feature 1: Retrieve chat stuff
     Method: GET
     URI:    /chatroom/msgtest.json/
@@ -136,6 +137,9 @@ Feature 1: Retrieve chat stuff
             ]
         }
         
+```
+
+```
 Feature 2: Post chat stuff
     Method: POST
     URI:    /chatroom/msgtest.json/
@@ -157,6 +161,10 @@ Feature 2: Post chat stuff
             ]
         }
         
+```
+
+
+```
 Feature 3: Retrieve hash stuff
     Method: GET
     URI:    /HaaS/
@@ -174,7 +182,10 @@ Feature 3: Retrieve hash stuff
                 }
             ]
         }
-        
+
+```
+
+```
 Feature 4: Create hash stuff
     Method: POST
     URI:    /HaaS/
@@ -195,7 +206,9 @@ Feature 4: Create hash stuff
                 }
             ]
         }
-        
+```
+
+```
 Feature 5: Update hash stuff
     Method: PUT
     URI:    /HaaS/
@@ -217,6 +230,9 @@ Feature 5: Update hash stuff
             ]
         }
         
+```
+
+```
 Feature 6: Delete hash stuff
     Method: DELETE
     URI:    /HaaS/
@@ -231,3 +247,4 @@ Feature 6: Delete hash stuff
             "message": "OK",
             "payload": []
         }
+```
