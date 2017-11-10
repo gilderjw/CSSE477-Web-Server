@@ -15,8 +15,8 @@
         }
     */
 
-    const chatUrl = "http://localhost:8080/chatroom/msgtest.json";
-    const hashUrl = "http://localhost:8080/HaaS/";
+    const chatUrl = "http://104.197.129.249/chatroom/msgtest.json";
+    const hashUrl = "http://104.197.129.249/HaaS/";
 
     function initTestChat() {
 
