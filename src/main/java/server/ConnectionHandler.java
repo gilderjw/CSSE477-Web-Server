@@ -80,8 +80,30 @@ public class ConnectionHandler implements Runnable {
 		HttpResponse response = null;
 		ResponseCreator rc = new ResponseCreator();
 		rc.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE).setResponseVersion(Protocol.VERSION);
+
 		try {
 			request = HttpRequest.read(inStream);
+			if (request.getMethod().equals("OPTIONS")) {
+				response = rc.setResponseFile(null).setResponseStatus(Protocol.OK_CODE)
+						.setResponsePhrase(Protocol.OK_TEXT).getResponse();
+
+				// dont even worry about xss my dude
+				response.put("Access-Control-Allow-Origin", "*"); // Allow any origin
+				response.put("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
+				response.put("Access-Control-Allow-Headers", "Content-Type, x-nocontent");
+
+				try {
+					// Write response and we are all done so close the socket
+					response.write(outStream);
+					// System.out.println(response);
+					this.socket.close();
+				} catch (Exception e) {
+					// We will ignore this exception
+					log.error("Socket couldn't be closed", e);
+				}
+				return;
+			}
+
 		} catch (ProtocolException pe) {
 			// We have some sort of protocol exception. Get its status code and create
 			// response
@@ -157,15 +179,6 @@ public class ConnectionHandler implements Runnable {
 		response.put("Access-Control-Allow-Origin", "*"); // Allow any origin
 		response.put("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
 		response.put("Access-Control-Allow-Headers", "Content-Type, x-nocontent");
-		
-		ResponseCreator options = new ResponseCreator();
-		rc.fillGeneralHeader(rc.getResponse(), Protocol.CLOSE).setResponseVersion(Protocol.VERSION);
-		if (request.getMethod().equals("OPTIONS")) {
-			response = rc.setResponseFile(null)
-						.setResponseStatus(Protocol.OK_CODE)
-						.setResponsePhrase(Protocol.OK_TEXT)
-						.getResponse();
-		}
 
 		try {
 			// Write response and we are all done so close the socket
